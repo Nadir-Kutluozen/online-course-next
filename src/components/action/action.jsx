@@ -3,7 +3,7 @@ import CourseSearchInput from "../section2/courseSearchInput";
 import { renderStars } from "./helperFuncsAction";
 import { renderLanguage } from "./helperFuncsAction";
 import { formatUdemyUrl } from "./helperFuncsAction";
-import styles from './action.module.css';
+import styles from './Action.module.css';
 
 const Action = () => {
   const [courseA, setCourseA] = useState(null);

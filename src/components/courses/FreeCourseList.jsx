@@ -3,7 +3,7 @@ import { renderStars, formatUdemyUrl } from '../action/helperFuncsAction';
 import { SquareLoader } from 'react-spinners';
 // import styles from './freeCourseList.module.css'; 
 import { getPlatformLogo } from '../action/helperFuncsAction'; // Import the utility function for platform logos
-import styles from './courseList.module.css'; // Import styles for consistent card design
+import styles from './CourseList.module.css'; // Import styles for consistent card design
 
 const FreeCourseList = () => {
   const [courses, setCourses] = useState([]);

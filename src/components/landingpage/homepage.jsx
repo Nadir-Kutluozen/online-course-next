@@ -1,6 +1,6 @@
 import React from 'react';
 import Squares from '../assets/Squares';
-import styles from './homepage.module.css';
+import styles from './Homepage.module.css';
 
 
 

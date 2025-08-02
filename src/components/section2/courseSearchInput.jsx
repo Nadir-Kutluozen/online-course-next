@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./courseSearchInput.module.css";
+import styles from "./CourseSearchInput.module.css";
 import { SquareLoader } from "react-spinners";
 
 const CourseSearchInput = ({ placeholder, onCourseSelect }) => {

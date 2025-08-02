@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './courseList.module.css';
+import styles from './CourseList.module.css';
 import { renderStars } from '../action/helperFuncsAction';
 import { formatUdemyUrl} from '../action/helperFuncsAction'; 
 import LevelsDropDownBtn from '../assets/buttons/LevelsDropDownBtn'; 
