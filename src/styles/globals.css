@@ -1,0 +1,92 @@
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: white;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  max-width: 100vw; /* Sets a maximum width for the root element */
+  margin: 0 auto;
+}
+
+
+
+.totheleft {
+  font-size: 7vw; 
+  text-align: left; 
+  color: #333; /* Optional: sets a color */   
+  text-transform: uppercase; /* Optional: makes it uppercase */
+  letter-spacing: -0.05em; /* Optional: adjusts letter spacing */
+  /* Optional: adds a bit of spacing between letters */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */ 
+  font-weight: bold; /* Optional: makes it stand out more */
+  line-height: 1.0; /* Optional: adjusts line height for better readability */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+}
+@media screen and (max-width: 600px) {
+  .totheleft {
+    font-size: 15vw; /* Adjusts the font size for smaller screens */
+  }
+  
+}
+.tothelefth2 {
+  font-size: 3vw; 
+  color: #333; /* Optional: sets a color */   
+  text-transform: uppercase; /* Optional: makes it uppercase */
+  letter-spacing: -0.05em; /* Optional: adjusts letter spacing */
+  /* Optional: adds a bit of spacing between letters */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */ 
+  font-weight: bold; /* Optional: makes it stand out more */
+  line-height: 1.0; /* Optional: adjusts line height for better readability */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+}
+@media screen and (max-width: 600px) {
+  .tothelefth2 {
+    font-size: 7vw; /* Adjusts the font size for smaller screens */
+  }
+  
+}
+
+.section {
+  height: 100vh;
+}
+
+.display-1{
+  letter-spacing: -0.03em; /* Adjusts letter spacing for the display-1 class */
+}
+
+
+.btn-custom {
+  text-align: center;
+  background-color: #333 !important; /* Sets a blue background color */
+  color: white !important; /* Sets the text color to white */
+  padding: 6px 16px; /* Adds padding around the button */
+  border: none; /* Removes default border */
+  border-radius: 20px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  font-size: 1rem; /* Sets font size */
+  transition: background-color 0.3s ease; /* Adds a transition effect for hover state */
+  text-decoration: none; /* Removes underline from text */
+}
+
+.btn-custom:hover {
+  background-color: #007bff !important; /* Changes background color on hover */
+}
+
+
+
+
+
+
+
+

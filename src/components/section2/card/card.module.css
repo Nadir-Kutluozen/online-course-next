@@ -1,0 +1,67 @@
+.cardCustom {
+    width: 100%; /* Make it responsive */
+    max-width: 320px; /* Limit the maximum width */
+    height: 420px; /* Set a minimum height */
+    margin: 16px auto; /* Center the card and add spacing */
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center; /* Center the content */
+    border-color: #4294ff;
+    border-style: solid;
+    border-width: 2px;
+}
+
+.cardImage {
+    display: block; /* Make the image a block element */
+    margin: 0 auto; /* Center the image horizontally */
+    width: 50px; /* Make the image responsive */
+    height: auto;
+    border-radius: 12px 12px 0 0;
+}
+
+.cardCustom:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cardTit {
+    font-size: 2vw;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.cardImage- {
+    width: 50px; 
+    height: auto;
+}
+
+.cardDesc {
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+    .cardDesc {
+        font-size: 0.8rem;
+        color: rgba(0, 0, 0, 0.6);
+        margin-top: 8px;
+    }
+
+    .cardTit {
+        font-size: 5vw;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .cardCustom{
+        height: auto;
+    }
+}
+
+
+
+

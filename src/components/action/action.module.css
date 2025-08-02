@@ -1,0 +1,30 @@
+.actionSection {
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    margin: 50px auto 70px auto;
+    padding-bottom: 40px;
+  }
+  
+  .comparisonResults {
+    border-radius: 25px;
+    padding: 20px;
+    margin: 20px auto;
+  }
+  
+  .courseImageComp {
+    width: 200px;
+    height: auto;
+    max-width: 200px;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px hsla(0, 0%, 0%, 0.791);
+  }
+  
+  .iconStyle {
+    font-size: 1.2rem;
+    color: #007bff;
+  }
+  

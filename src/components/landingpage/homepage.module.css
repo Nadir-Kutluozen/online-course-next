@@ -1,0 +1,44 @@
+.customWrapper {
+  position: relative;
+  overflow: hidden; /* Prevents overflow */
+  min-height: 100vh; /* Ensures full viewport height */
+}
+
+.squaresLayer {
+  position: absolute;
+  z-index: 1;
+  pointer-events: auto;
+  min-height: 100vh;
+}
+
+.customContent {
+  position: relative;
+  z-index: 1; /* in front of squares */
+}
+
+.blue {
+  color: #007bff;
+}
+
+.logoImage {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.logoWrapper img {
+  height: 80px;
+  opacity: 0.9;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.logoWrapper:hover img {
+  filter: brightness(1.2);
+  opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .logoWrapper img {
+    height: 50px;
+  }
+}

@@ -1,0 +1,6 @@
+.squaresCanvas {
+  max-width: 2280px; /* Sets a maximum width for the root element */
+  height: 100%;
+  border: none;
+  display: block;
+}
