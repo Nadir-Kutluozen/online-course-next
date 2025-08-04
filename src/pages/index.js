@@ -10,6 +10,10 @@ export default function HomePage() {
       <Head>
         <title>Compare Online Courses | OnlineCourseCompare</title>
         <meta name="description" content="Find and compare the best online courses from Udemy, Coursera, edX and more." />
+        <meta name="keywords" content="online course compare, udemy vs coursera, best online course 2025" />
+        <meta name="author" content="Nadir Kutluozen" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://www.onlinecoursecompare.com" />
       </Head>
       <Homepage />
       <Action />
