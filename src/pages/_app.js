@@ -15,6 +15,16 @@ export default function App({ Component, pageProps }) {
     <>
       <Head>
         <link rel="icon" href="./logo.svg" />
+        <script type="application/ld+json">
+{`
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "https://www.onlinecoursecompare.com",
+  "logo": "https://www.onlinecoursecompare.com/logo.svg"
+}
+`}
+</script>
         
         <title>Online Course Compare</title>
       </Head>
