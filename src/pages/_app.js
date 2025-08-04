@@ -4,6 +4,7 @@ import Footer from '../components/footer/Footer'
 import '../components/App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';  
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Analytics } from '@vercel/analytics/react';
 
 
 
@@ -14,6 +15,7 @@ export default function App({ Component, pageProps }) {
     <>
       <Header />
       <Component {...pageProps} />
+      <Analytics />
       <Footer />
     </>
   )
