@@ -8,6 +8,8 @@ const AboutPage = () => {
     <>
       <Head>
         <title>About Us | OnlineCourseCompare</title>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4949825107605621"
+     crossorigin="anonymous"></script>
         <meta name="description" content="Learn about OnlineCourseCompare, my mission to help users find the best online courses." />
         <meta name="keywords" content="about online course compare, online course comparison project, who am I" />
         <meta name="author" content="Nadir Kutluozen" />
