@@ -1,6 +1,7 @@
 // src/pages/FreeCoursesPage.jsx
 import React from 'react';
 import FreeCourseList from '../components/courses/FreeCourseList';
+import Head from 'next/head';
 
 const FreeCoursesPage = () => {
   return (

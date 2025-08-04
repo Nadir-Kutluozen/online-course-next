@@ -1,6 +1,7 @@
 // src/pages/about.jsx
 import React from 'react';
 import CourseList from '../components/courses/CourseList';
+import Head from 'next/head';
 
 const CoursesPage = () => {
   return (

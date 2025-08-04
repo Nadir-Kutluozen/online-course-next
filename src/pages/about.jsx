@@ -1,6 +1,7 @@
 // src/pages/about.jsx
 import React from 'react';
 import About from '../components/about/About';
+import Head from 'next/head';
 
 const AboutPage = () => {
   return (
