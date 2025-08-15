@@ -17,6 +17,8 @@ const CoursesPage = () => {
           <link rel="canonical" href="https://www.onlinecoursecompare.com/courses" />
       </Head>
       <CourseList></CourseList>
+      
+      
     </>
   );
 };

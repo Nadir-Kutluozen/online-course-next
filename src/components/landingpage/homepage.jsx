@@ -24,12 +24,12 @@ const Homepage = () => {
           <div className="row align-items-center">
             <div className="col-md-6 p-3">
               <div>
-                <h1 className={`totheleft ${styles.customContent}`}>Online</h1>
-                <h1 className={`totheleft ${styles.blue}`}>Course</h1>
-                <h1 className={`totheleft ${styles.customContent}`}>Compare</h1>
-                <p className={`pt-3 lead ${styles.customContent}`}>
-                  Explore 10,000+ online courses from top platforms like Udemy, Coursera, and edX.
-                  Find the right course for your future, compare options, and start learning smarter today.
+                <h1 className={`totheleft  ${styles.customContent}`}>Online</h1>
+                <h1 className={`totheleft  ${styles.blue}`}>Course</h1>
+                <h1 className={`totheleft  ${styles.customContent}`}>Compare</h1>
+                <p  className={`pt-3 lead text-body-secondary fw-medium ${styles.customContent}`}>
+                  You can explore 10,000+ online courses from top platforms like Udemy, Coursera, and edX and compare them to
+                  find the right course for your future. Compare options, and start learning smarter today.
                 </p>
               </div>
             </div>

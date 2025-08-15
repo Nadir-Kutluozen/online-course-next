@@ -2,6 +2,7 @@
 import React from 'react';
 import About from '../components/about/About';
 import Head from 'next/head';
+import Test from '../components/about/Test'; // Assuming Test is a component in the same directory
 
 const AboutPage = () => {
   return (
@@ -17,6 +18,7 @@ const AboutPage = () => {
         <link rel="canonical" href="https://www.onlinecoursecompare.com/about" />
       </Head>
       <About></About>
+      
     </>
   );
 };

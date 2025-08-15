@@ -68,3 +68,20 @@
     text-overflow: ellipsis;
     min-height: 66px; /* match height of 3 lines */
   }
+
+.stickyWrapper {
+  position: sticky;
+  top: 5rem;
+  z-index: 100;
+  align-self: flex-start; /* keep it aligned at the top in desktop flex layout */
+}
+
+/* On small screens (≤ 991px in Bootstrap), make it static + centered */
+@media (max-width: 991.98px) {
+  .stickyWrapper {
+    position: static;          /* disable sticky */
+    margin: 0 auto;            /* center horizontally */
+    display: flex;
+    justify-content: center;   /* if you want its contents centered too */
+  }
+}

@@ -1,0 +1,61 @@
+.card {
+  background: #fff;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 25px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
+  padding: 16px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.group {
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.group:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4f4f4f;
+  margin-bottom: 6px;
+}
+
+.priceBadge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: #f4f4f4;
+}
+
+.pillBtn {
+  border-radius: 999px !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+}
+
+/* Sticky offset for App Router layouts */
+.sticky-top {
+  top: 1rem;
+}
+
+@media (max-width: 576px) {
+  .card {
+    border-radius: 14px;
+    padding: 12px;
+  }
+  .body {
+    gap: 12px;
+  }
+}
+
