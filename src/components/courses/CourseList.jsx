@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./CourseList.module.css";
 import { renderStars, formatUdemyUrl, getPlatformLogo } from "../action/helperFuncsAction.jsx";
 import { SquareLoader } from "react-spinners";
-import FilterSidebar from "./FilterSideBar.jsx";
+import FilterSidebar from "./FilterSidebar.jsx";
 
 
 
