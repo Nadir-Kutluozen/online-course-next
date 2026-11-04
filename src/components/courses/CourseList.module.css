@@ -1,87 +1,30 @@
-.courseCard {
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-    border-radius: 25px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .courseCard:hover {
-    border: 2px solid #007bff; /* Blue outline */
-    transform: translateY(-5px) scale(1.02); /* Pop effect */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    z-index: 2;
-  }
-  
-  .courseImg {
-    border-radius: 12px 12px 0 0;
-    height: 180px;
-    width: 100%;             /* make image span full width */
-    object-fit: contain;       /* crops image nicely while keeping aspect */
-    display: block;          /* ensures no extra space below image */
-    margin: 0 auto;         /* centers the image */ 
-    background-color: none; /* optional: for images that fail to load */
-
-
-  }
-  
-  
-  .cardTitle {
-    font-weight: 600;
-    font-size: 1rem;
-  }
-  
-  .cardFooter {
-    font-size: 0.8rem;
-    border-top: 1px solid #e9ecef;
-    padding: 0.5rem 1rem;
-  }
-  
-  .platformLogoWrapper {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 40px;
-    height: 40px;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1; /* Ensure it appears above the image */
-    
-  }
-  
-  .platformLogo {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
-  .cardText {
-    flex-grow: 1;
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* show 3 lines max */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 66px; /* match height of 3 lines */
-  }
-
-.stickyWrapper {
-  position: sticky;
-  top: 5rem;
-  z-index: 100;
-  align-self: flex-start; /* keep it aligned at the top in desktop flex layout */
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 32px; }
+.search, .select, .toggle, .topic {
+  border-radius: var(--pill);
+  border: 2px solid #3A3A37;
+  background: transparent;
+  color: var(--text);
+  padding: 11px 18px;
+  font-size: 15px;
+  transition: border-color .15s, background-color .15s, color .15s;
 }
-
-/* On small screens (≤ 991px in Bootstrap), make it static + centered */
-@media (max-width: 991.98px) {
-  .stickyWrapper {
-    position: static;          /* disable sticky */
-    margin: 0 auto;            /* center horizontally */
-    display: flex;
-    justify-content: center;   /* if you want its contents centered too */
-  }
+.search { flex: 1 1 260px; min-width: 0; background: var(--paper); border-color: var(--paper); color: var(--ink); outline: none; }
+.search:focus { border-color: var(--lilac); }
+.search::placeholder { color: #6E6E66; }
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23F5F5F0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
 }
+.select option { color: var(--ink); background: var(--paper); }
+.select:hover, .toggle:hover, .topic:hover { border-color: var(--text); }
+.toggle[aria-pressed="true"] { background: var(--butter); border-color: var(--butter); color: var(--ink); }
+.topic { background: var(--lilac); border-color: var(--lilac); color: var(--ink); font-weight: 600; }
+.reset { border: 0; background: transparent; color: var(--butter); text-decoration: underline; padding: 8px 6px; font-weight: 600; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; margin-top: 28px; }
+.empty { margin-top: 28px; color: var(--soft); }
+.moreRow { display: flex; justify-content: center; margin-top: 32px; }

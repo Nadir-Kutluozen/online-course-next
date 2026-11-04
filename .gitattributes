@@ -1,0 +1,4 @@
+# ReportLab writes PDFs as plain ASCII, so Git would otherwise treat them as
+# text and rewrite their line endings on Windows checkouts, breaking the file.
+*.pdf binary
+*.woff2 binary

@@ -1,0 +1,13 @@
+.footer {
+  background: var(--butter);
+  color: var(--ink);
+  border-radius: var(--r);
+  padding: clamp(28px, 5vw, 60px);
+  margin: clamp(40px, 6vw, 72px) 0 16px;
+}
+.big { font-size: clamp(38px, 6.4vw, 96px); line-height: 1.05; text-wrap: balance; }
+.row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; margin-top: 32px; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 22px; font-weight: 600; }
+.links a { text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+.small { font-size: 13.5px; }

@@ -10,15 +10,13 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@stew-engine/player": "0.2.0",
+    "@supabase/supabase-js": "^2.99.1",
     "@vercel/analytics": "^1.5.0",
-    "bootstrap": "^5.3.7",
-    "bootstrap-icons": "^1.13.1",
-    "lucide-react": "^0.536.0",
     "next": "15.5.29",
     "next-sitemap": "^4.2.3",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "react-spinners": "^0.17.0"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

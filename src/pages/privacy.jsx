@@ -1,6 +1,6 @@
 // src/pages/about.jsx
 import React from 'react';
-import PrivacyPolicy from '../components/assets/PrivacyPolicy';
+import PrivacyPolicy from '../components/about/PrivacyPolicy';
 import Head from 'next/head';
 
 const PrivacyPage = () => {
