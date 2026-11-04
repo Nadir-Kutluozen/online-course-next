@@ -12,6 +12,15 @@ export default function Document() {
         <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=array@400&display=swap" />
         {/* Impact (affiliate network) site verification, exactly as Impact gave it */}
         <meta name="impact-site-verification" value="1249c923-692c-4175-ab20-3df279c21b24" />
+        {/* Impact's tracking script, exactly as Impact gave it: verifies the site and
+            turns links to partner brands into tracked affiliate links */}
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(i,m,p,a,c,t){c.ire_o=p;c[p]=c[p]||function(){(c[p].a=c[p].a||[]).push(arguments)};t=a.createElement(m);var z=a.getElementsByTagName(m)[0];t.async=1;t.src=i;z.parentNode.insertBefore(t,z)})('https://utt.impactcdn.com/P-A8119547-0860-43fa-bd3c-b7de0463f5691.js','script','impactStat',document,window);impactStat('transformLinks');impactStat('trackImpression');",
+          }}
+        />
         {/* Google AdSense, loaded once for every page */}
         <script
           async
