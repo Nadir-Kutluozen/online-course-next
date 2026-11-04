@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://onlinecoursecompare.com
+Host: https://www.onlinecoursecompare.com
 
 # Sitemaps
-Sitemap: https://onlinecoursecompare.com/sitemap.xml
+Sitemap: https://www.onlinecoursecompare.com/sitemap.xml

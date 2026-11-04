@@ -56,11 +56,26 @@ export const getPlatformLogo = (platform) => {
   const platformLower = (platform || "").toLowerCase();
 
   if (platformLower.includes("udemy")) {
-    return "udemy_logo.png";
+    return "/udemy_logo.png";
   }
   if (platformLower.includes("coursera")) {
-    return "corsera_logo.png";
+    return "/corsera_logo.png";
   }
   return null; // fallback
+};
+
+// Price label that doesn't call a course "free" when only auditing it is free.
+// `pricing` is set by scripts/export_courses.py.
+export const formatPrice = (course) => {
+  switch (course.pricing) {
+    case "audit":
+      return "Free to audit";
+    case "free":
+      return "Free";
+    case "unknown":
+      return `See price on ${course.platform}`;
+    default:
+      return `$${course.price}`;
+  }
 };
 

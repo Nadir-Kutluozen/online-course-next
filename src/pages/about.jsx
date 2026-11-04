@@ -2,15 +2,12 @@
 import React from 'react';
 import About from '../components/about/About';
 import Head from 'next/head';
-import Test from '../components/about/Test'; // Assuming Test is a component in the same directory
 
 const AboutPage = () => {
   return (
     <>
       <Head>
         <title>About Us | OnlineCourseCompare</title>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4949825107605621"
-     crossorigin="anonymous"></script>
         <meta name="description" content="Learn about OnlineCourseCompare, my mission to help users find the best online courses." />
         <meta name="keywords" content="about online course compare, online course comparison project, who am I" />
         <meta name="author" content="Nadir Kutluozen" />
@@ -18,7 +15,7 @@ const AboutPage = () => {
         <link rel="canonical" href="https://www.onlinecoursecompare.com/about" />
       </Head>
       <About></About>
-      
+
     </>
   );
 };
