@@ -1,8 +1,10 @@
 import React from 'react';
-import { courseImage, formatPrice, formatRating } from '../../lib/format';
+import Link from 'next/link';
+import { courseImage, coursePath, formatPrice, formatRating } from '../../lib/format';
 import styles from './CourseCard.module.css';
 
-// The whole card links to the course on its platform. `compact` leaves out the image.
+// The whole card links to the course's page here (ratings, alternatives, and a
+// link out to the platform). `compact` leaves out the image.
 const CourseCard = ({ course, compact = false }) => {
   const img = compact ? null : courseImage(course);
   const isFree = course.pricing === 'audit' || course.pricing === 'free';
@@ -20,7 +22,7 @@ const CourseCard = ({ course, compact = false }) => {
       <div className={styles.body}>
         <p className={`label ${styles.meta}`}>{[course.platform, course.level].filter(Boolean).join(' · ')}</p>
         <h3 className={styles.title}>
-          <a href={course.url} target="_blank" rel="noopener noreferrer" className={styles.link}>{course.title}</a>
+          <Link href={coursePath(course)} className={styles.link}>{course.title}</Link>
         </h3>
         {course.instructor_names && <p className={styles.by}>{course.instructor_names}</p>}
         <div className={styles.facts}>

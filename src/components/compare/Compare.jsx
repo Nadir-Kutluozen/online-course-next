@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import CourseSearchInput from "./CourseSearchInput";
 import { RevealHeading } from "../motion/Reveal";
-import { formatPrice, formatRating, languageName } from "../../lib/format";
+import Link from "next/link";
+import { coursePath, formatPrice, formatRating, languageName } from "../../lib/format";
 import styles from "./Compare.module.css";
 
 const ROWS = [
@@ -41,7 +42,7 @@ const Compare = ({ initialPair = [] }) => {
                   {courses.map((c, i) => (
                     <th scope="col" key={i}>
                       {c ? (
-                        <a href={c.url} target="_blank" rel="noopener noreferrer">{c.title}</a>
+                        <Link href={coursePath(c)}>{c.title}</Link>
                       ) : (
                         <span className={styles.empty}>Pick a {i === 0 ? "first" : "second"} course</span>
                       )}

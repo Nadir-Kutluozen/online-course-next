@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import HatMascot from './HatMascot';
 import Reveal, { RevealHeading } from '../motion/Reveal';
-import { compactNumber, topicLabel } from '../../lib/format';
+import { compactNumber, topicLabel, topicPath } from '../../lib/format';
 import styles from './Home.module.css';
 
 // Each piece of the headline slides up inside its own mask once on load (--d is its delay step).
@@ -112,7 +112,7 @@ export const Topics = ({ topics, courseCount }) => {
         {top.map((t, i) => (
           <Link
             key={t.name}
-            href={`/courses?category=${encodeURIComponent(t.name)}`}
+            href={topicPath(t.name)}
             className={`m-wipe ${styles.tile} ${styles[TILE_COLORS[i]]}`}
             style={{ '--d': i + 1 }}
           >
@@ -123,7 +123,7 @@ export const Topics = ({ topics, courseCount }) => {
       </Reveal>
       <div className={styles.more}>
         {rest.map((t) => (
-          <Link key={t.name} href={`/courses?category=${encodeURIComponent(t.name)}`} className="btn btn-outline">
+          <Link key={t.name} href={topicPath(t.name)} className="btn btn-outline">
             {topicLabel(t.name)} <span className={styles.count}>{t.count.toLocaleString('en-US')}</span>
           </Link>
         ))}
