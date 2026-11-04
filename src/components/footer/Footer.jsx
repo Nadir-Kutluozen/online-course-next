@@ -1,26 +1,27 @@
-
 import React from 'react';
+import Link from 'next/link';
+import styles from './Footer.module.css';
 
 const Footer = () => {
   return (
-    <>
-      <hr className="footer-line" />
-      <footer className="bg-ligth text-dark py-4 mt-5">
-  <div className="container text-center">
-    <p className="mb-1">&copy; {new Date().getFullYear()} OnlineCourseCompare</p>
-    <p className="mb-1">
-      <a href="/about" className=" text-decoration-none me-3">About</a>
-      <a href="/courses" className=" text-decoration-none me-3">Courses</a>
-      <a href="/free-courses" className=" text-decoration-none me-3">Free Courses</a>
-      <a href="/privacy" className="text-decoration-none">Privacy Policy</a>
-    </p>
-    <p className="small text-muted">Compare courses from trusted platforms like Udemy, Coursera, and more. Find the right course for your learning goals.</p>
-  </div>
-</footer>
-    </>
+    <div className="wrap">
+      <footer className={styles.footer}>
+        <p className={`accent-type ${styles.big}`}>Compare before you buy</p>
+        <div className={styles.row}>
+          <nav className={styles.links} aria-label="Footer">
+            <Link href="/courses">Courses</Link>
+            <Link href="/free-courses">Free to audit</Link>
+            <Link href="/#compare">Compare</Link>
+            <Link href="/about">About</Link>
+            <Link href="/privacy">Privacy policy</Link>
+          </nav>
+          <p className={styles.small} suppressHydrationWarning>
+            &copy; {new Date().getFullYear()} OnlineCourseCompare. Not affiliated with Udemy or Coursera.
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 };
+
 export default Footer;
-
-
-

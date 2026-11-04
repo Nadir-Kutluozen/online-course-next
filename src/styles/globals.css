@@ -1,92 +1,125 @@
-
+/* Design tokens: black page, color blocks, one shape rule
+   (controls are pills, containers have 20px corners). */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --bg: #0E0E0E;
+  --text: #F5F5F0;
+  --muted: #A3A39A;
+  --soft: #D9D9D2;
+  --line: #2C2C2A;
+  --ink: #0E0E0E;
+  --paper: #F5F5F0;
+  --butter: #FFD23F;
+  --volt: #6C4DFF;
+  --lilac: #B7A6FF;
+  --coral: #FF5A36;
+  --sky: #A6D8FF;
+  --lime: #C8E46C;
+  --r: 20px;
+  --pill: 999px;
+  --gutter: clamp(16px, 3vw, 48px);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 17px/1.5 var(--font-body), system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, p { margin: 0; }
+:focus-visible { outline: 3px solid var(--lilac); outline-offset: 3px; }
+
+.wrap { width: min(1680px, 100% - 2 * var(--gutter)); margin-inline: auto; }
+.section { padding-block: clamp(56px, 8vw, 104px); }
+.display {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: .92;
+  letter-spacing: -.01em;
+  /* Clash's word space is very narrow */
+  word-spacing: .08em;
+  text-wrap: balance;
+}
+/* Outlined letters: the stroke takes the text color, the inside stays empty */
+.outline {
+  color: transparent;
+  -webkit-text-stroke: max(1.5px, .028em) var(--stroke, var(--text));
+  paint-order: stroke fill;
+}
+/* The dotted accent face. Keep it to a line or two per page. */
+.accent-type {
+  font-family: 'Array', var(--font-display), sans-serif;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: white;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
- 
-  max-width: 100vw; /* Sets a maximum width for the root element */
-  margin: 0 auto;
+  text-transform: none;
 }
-
-
-
-.totheleft {
-  font-size: 7vw; 
-  text-align: left; 
-  color: #333; /* Optional: sets a color */   
-  text-transform: uppercase; /* Optional: makes it uppercase */
-  letter-spacing: -0.05em; /* Optional: adjusts letter spacing */
-  /* Optional: adds a bit of spacing between letters */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */ 
-  font-weight: bold; /* Optional: makes it stand out more */
-  line-height: 1.0; /* Optional: adjusts line height for better readability */
-  margin: 0; /* Removes default margin */
-  padding: 0; /* Removes default padding */
+.label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
-@media screen and (max-width: 600px) {
-  .totheleft {
-    font-size: 15vw; /* Adjusts the font size for smaller screens */
+.h2 { font-size: clamp(38px, 5vw, 76px); }
+.lede { font-size: clamp(17px, 1.25vw, 20px); max-width: 48ch; color: var(--soft); margin-top: 20px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Controls are always pills. On hover they change color, never position. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: var(--pill);
+  border: 2px solid transparent;
+  font-size: 15.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color .15s, color .15s, border-color .15s;
+}
+.btn-primary { background: var(--butter); color: var(--ink); }
+.btn-primary:hover { background: var(--text); }
+.btn-dark { background: var(--ink); color: var(--text); }
+.btn-dark:hover { background: var(--volt); }
+.btn-outline { border-color: #5A5A55; background: transparent; color: var(--text); }
+.btn-outline:hover { background: var(--text); color: var(--ink); border-color: var(--text); }
+/* Motion, once per element: things slide up out of a mask, get drawn as a line,
+   or get uncovered from the bottom. Nothing fades. Hidden states apply only with
+   JS on (the js class) and when the viewer allows motion. See motion/Reveal.jsx. */
+.m-mask { display: block; overflow: hidden; padding-bottom: .16em; margin-bottom: -.16em; }
+.m-rise { display: block; }
+.m-draw { overflow: visible; pointer-events: none; }
+.m-draw path {
+  fill: none;
+  stroke-dasharray: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] .m-rise { transform: translateY(calc(100% + .3em)); }
+  .js [data-reveal] .m-draw path { stroke-dashoffset: 1; }
+  .js [data-reveal] .m-wipe { clip-path: inset(100% -8px -8px -8px round var(--r)); }
+  .js [data-reveal][data-in] .m-rise {
+    transform: none;
+    transition: transform .8s var(--ease) calc(var(--d, 0) * 90ms);
   }
-  
-}
-.tothelefth2 {
-  font-size: 3vw; 
-  color: #333; /* Optional: sets a color */   
-  text-transform: uppercase; /* Optional: makes it uppercase */
-  letter-spacing: -0.05em; /* Optional: adjusts letter spacing */
-  /* Optional: adds a bit of spacing between letters */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */ 
-  font-weight: bold; /* Optional: makes it stand out more */
-  line-height: 1.0; /* Optional: adjusts line height for better readability */
-  margin: 0; /* Removes default margin */
-  padding: 0; /* Removes default padding */
-}
-@media screen and (max-width: 600px) {
-  .tothelefth2 {
-    font-size: 7vw; /* Adjusts the font size for smaller screens */
+  .js [data-reveal][data-in] .m-draw path {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s var(--ease) calc(var(--d, 0) * 120ms + .45s);
   }
-  
+  .js [data-reveal][data-in] .m-wipe {
+    clip-path: inset(-8px round var(--r));
+    transition: clip-path .8s var(--ease) calc(var(--d, 0) * 90ms), border-color .15s;
+  }
 }
 
-.section {
-  height: 100vh;
-}
-
-.display-1{
-  letter-spacing: -0.03em; /* Adjusts letter spacing for the display-1 class */
-}
-
-
-.btn-custom {
-  text-align: center;
-  background-color: #333 !important; /* Sets a blue background color */
-  color: white !important; /* Sets the text color to white */
-  padding: 6px 16px; /* Adds padding around the button */
-  border: none; /* Removes default border */
-  border-radius: 20px; /* Rounds the corners of the button */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  font-size: 1rem; /* Sets font size */
-  transition: background-color 0.3s ease; /* Adds a transition effect for hover state */
-  text-decoration: none; /* Removes underline from text */
-}
-
-.btn-custom:hover {
-  background-color: #007bff !important; /* Changes background color on hover */
-}
-
-
-
-
-
-
-
-
+.chip { display: inline-flex; align-items: center; border-radius: var(--pill); padding: 4px 12px; font-size: 12.5px; font-weight: 600; }

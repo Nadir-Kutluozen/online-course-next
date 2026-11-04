@@ -1,0 +1,165 @@
+/* Hero: search first. Centered on the black page, filling the first screen
+   under the header, with real catalog numbers along the bottom. */
+.hero {
+  --hat: clamp(84px, 6.4vw, 108px);
+  /* how far the brim sits down onto the search bar */
+  --sink: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: clamp(520px, calc(100svh - 80px), 980px);
+  padding-block: clamp(20px, 3vw, 44px) clamp(16px, 2vw, 28px);
+}
+.heroMain { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.title { font-size: clamp(34px, min(4.8vw, 7.6svh), 76px); line-height: 1.04; }
+.line { display: block; }
+.accent { color: var(--butter); margin-top: .06em; }
+.mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding: .05em 0 .1em; margin: -.05em 0 -.1em; }
+.rise { display: inline-block; animation: rise .8s var(--ease) both; animation-delay: calc(var(--d) * 90ms); }
+@keyframes rise { from { transform: translateY(calc(100% + .3em)); } }
+.heroLede { max-width: 660px; font-size: clamp(15.5px, 1.1vw, 17.5px); }
+
+/* The hat sits on top of the search bar, just left of the Search button, with
+   its brim resting a little way down the bar and a hard black shadow under it.
+   On load it pops up out of the bar (clipped at the bottom only, so its own
+   motion can spill out the top and sides). Hovering it makes it talk. */
+.searchSpot { position: relative; width: min(100%, 760px); margin-top: calc(var(--hat) * .95 - var(--sink) + 10px); }
+.hatSpot { position: absolute; z-index: 2; right: clamp(112px, 11vw, 140px); bottom: calc(100% - var(--sink)); pointer-events: none; }
+.hatShadow { filter: drop-shadow(5px 5px 0 var(--ink)); }
+.hatClip { clip-path: inset(-60% -60% -8px -60%); pointer-events: auto; }
+.hatRise { animation: rise .9s var(--ease) .35s both; }
+/* Leaning a little. The artwork has some empty room under the brim; sink it so
+   the brim sits on the edge. */
+.hat {
+  display: block;
+  width: var(--hat);
+  height: calc(var(--hat) * 1.046);
+  margin-bottom: calc(var(--hat) * -.06);
+  rotate: 8deg;
+  transform-origin: 50% 85%;
+}
+.bubble {
+  position: absolute;
+  right: 82%;
+  bottom: 56%;
+  width: max-content;
+  text-align: left;
+  color: var(--text);
+  padding: 10px 30px 12px 18px;
+  visibility: hidden;
+  transition: visibility 0s .3s;
+}
+.bubble svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.bubble path {
+  /* Filled with the page color so it covers any text behind it */
+  fill: var(--bg);
+  stroke: var(--paper);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset .25s ease-in;
+}
+.bubbleMask { position: relative; z-index: 1; display: block; overflow: hidden; }
+.bubbleText {
+  display: block;
+  font-size: clamp(14px, 1.05vw, 16.5px);
+  font-weight: 600;
+  line-height: 1.15;
+  max-width: 15ch;
+  transform: translateY(calc(100% + .3em));
+  transition: transform .2s ease-in;
+}
+.hatSpot:has(.hatClip:hover) .bubble { visibility: visible; transition: none; }
+.hatSpot:has(.hatClip:hover) .bubble path { stroke-dashoffset: 0; transition: stroke-dashoffset .55s var(--ease); }
+.hatSpot:has(.hatClip:hover) .bubbleText { transform: none; transition: transform .45s var(--ease) .15s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .hatRise { animation: none; }
+  .bubble path, .bubbleText { transition: none !important; }
+}
+
+/* Hand-drawn marks on section headings */
+.marked { position: relative; display: inline-block; }
+.marked svg { position: absolute; left: -2%; bottom: -.1em; width: 104%; height: .16em; }
+.marked path { stroke: var(--butter); stroke-width: 5; }
+.ctaRow { position: relative; display: inline-flex; }
+.arrow { position: absolute; left: calc(100% + 14px); bottom: 8px; width: 112px; height: 76px; }
+.arrow path { stroke: var(--butter); stroke-width: 3; }
+/* The search bar gets a hard shadow: a solid offset copy, no blur */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--paper);
+  border-radius: var(--pill);
+  padding: 7px 7px 7px 26px;
+  box-shadow: 7px 7px 0 var(--lilac);
+  transition: box-shadow .15s;
+}
+.search:focus-within { box-shadow: 7px 7px 0 var(--butter); }
+.search input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; color: var(--ink); font-size: 18px; padding: 12px 0; text-align: left; }
+.search input::placeholder { color: #6E6E66; }
+.heroLinks { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; }
+/* Real numbers from the whole catalog, along the bottom of the hero */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  width: min(100%, 760px);
+  margin: clamp(28px, 4vh, 48px) 0 0;
+  padding-top: 18px;
+  border-top: 1.5px solid var(--line);
+}
+.stats > div { display: flex; flex-direction: column; gap: 6px; }
+.stats dt { color: var(--muted); }
+.stats dd { order: -1; margin: 0; font-size: clamp(28px, 2.6vw, 44px); line-height: 1; }
+
+/* Color blocks */
+.butter { background: var(--butter); color: var(--ink); }
+.coral { background: var(--coral); color: var(--ink); }
+.sky { background: var(--sky); color: var(--ink); }
+.lime { background: var(--lime); color: var(--ink); }
+.volt { background: var(--volt); color: var(--text); }
+
+/* Questions */
+.questions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 36px; }
+.block { border-radius: var(--r); padding: 24px; display: flex; flex-direction: column; gap: 14px; min-height: 240px; }
+.blockTitle { font-size: clamp(24px, 2.05vw, 32px); }
+
+/* Topics */
+.topics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(190px, auto); gap: 14px; margin-top: 36px; }
+.tile {
+  border-radius: var(--r);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: border-color .15s;
+}
+.tile:hover { border-color: var(--text); }
+.tileBig { grid-column: span 2; grid-row: span 2; }
+.tileName { font-size: clamp(24px, 2.3vw, 36px); }
+.tileBig .tileName { font-size: clamp(40px, 4.4vw, 70px); }
+.more { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.count { color: var(--muted); font-weight: 500; }
+
+/* Rate */
+.rate { background: var(--volt); border-radius: var(--r); padding: clamp(28px, 5vw, 64px); display: grid; gap: 22px; justify-items: start; }
+.rateText { font-size: clamp(16px, 1.2vw, 19px); max-width: 56ch; color: #EDEBFF; }
+
+@media (max-width: 900px) {
+  .questions, .topics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .questions, .topics { grid-template-columns: minmax(0, 1fr); }
+  .tileBig { grid-column: auto; grid-row: auto; }
+  .block { min-height: 0; }
+  .search :global(.btn) { padding: 12px 16px; }
+}

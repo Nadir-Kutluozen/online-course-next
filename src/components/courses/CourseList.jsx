@@ -1,55 +1,67 @@
-
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import CourseCard from "./CourseCard";
+import { topicLabel } from "../../lib/format";
 import styles from "./CourseList.module.css";
-import { renderStars, formatUdemyUrl, getPlatformLogo, formatPrice } from "../action/helperFuncsAction.jsx";
-import { SquareLoader } from "react-spinners";
-import FilterSidebar from "./FilterSidebar.jsx";
 
-
+const LIMIT = 20;
+const DEFAULTS = { search: "", category: "", level: "", platform: "", maxPrice: "", topRated: false };
 
 function CourseList({ initialCourses = [] }) {
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [filters, setFilters] = useState(DEFAULTS);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   // First page comes from getStaticProps so it is in the HTML Google sees.
   const [courses, setCourses] = useState(initialCourses);
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [filterRating, setFilterRating] = useState("");
-  const [filterLevel, setFilterLevel] = useState("");
-  const [selectedLevelLabel, setSelectedLevelLabel] = useState("Level");
-  const [maxPrice, setMaxPrice] = useState(150);
-  const [filterPlatform, setFilterPlatform] = useState("");
-  const [selectedPlatformLabel, setSelectedPlatformLabel] = useState("Platform");
-
-  const limit = 20;
   const [skip, setSkip] = useState(initialCourses.length);
-  const [hasMore, setHasMore] = useState(initialCourses.length === limit);
+  const [hasMore, setHasMore] = useState(initialCourses.length === LIMIT);
+  const [loading, setLoading] = useState(false);
 
   // Ignore responses that arrive after a newer request was started.
   const requestId = useRef(0);
-  const isFirstRender = useRef(true);
+  const isFirstRun = useRef(true);
 
-  const fetchCourses = (reset = false) => {
+  const setFilter = (key, value) => setFilters((f) => ({ ...f, [key]: value }));
+  const isDefault = JSON.stringify(filters) === JSON.stringify(DEFAULTS);
+
+  // Searches and topic tiles on the homepage link here with ?search= and ?category=.
+  useEffect(() => {
+    if (!router.isReady) return;
+    const search = String(router.query.search || "");
+    const category = String(router.query.category || "");
+    if (search || category) {
+      setFilters((f) => ({ ...f, search, category }));
+      setDebouncedSearch(search);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  // Wait until the user stops typing before searching.
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(filters.search), 300);
+    return () => clearTimeout(timer);
+  }, [filters.search]);
+
+  const fetchCourses = (reset) => {
     setLoading(true);
     const thisRequest = ++requestId.current;
     const params = new URLSearchParams();
-
     if (debouncedSearch) params.append("search", debouncedSearch);
-    if (filterRating) params.append("rating", filterRating);
-    if (filterLevel) params.append("level", filterLevel);
-    if (maxPrice !== 150) params.append("max_price", maxPrice);
-    if (filterPlatform) params.append("platform", filterPlatform);
-
+    if (filters.category) params.append("category", filters.category);
+    if (filters.level) params.append("level", filters.level);
+    if (filters.platform) params.append("platform", filters.platform);
+    if (filters.maxPrice !== "") params.append("max_price", filters.maxPrice);
+    if (filters.topRated) params.append("rating", "4.5");
     params.append("skip", reset ? 0 : skip);
-    params.append("limit", limit);
+    params.append("limit", LIMIT);
 
     fetch(`/api/courses?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         if (thisRequest !== requestId.current) return;
-        setCourses(prev => (reset ? data : [...prev, ...data]));
-        setSkip(prev => (reset ? limit : prev + limit));
-        setHasMore(data.length === limit);
+        setCourses((prev) => (reset ? data : [...prev, ...data]));
+        setSkip((prev) => (reset ? LIMIT : prev + LIMIT));
+        setHasMore(data.length === LIMIT);
         setLoading(false);
       })
       .catch((err) => {
@@ -58,130 +70,94 @@ function CourseList({ initialCourses = [] }) {
       });
   };
 
-  // Wait until the user stops typing before searching.
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(searchQuery), 300);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
-
   useEffect(() => {
     // The unfiltered first page is already rendered from initialCourses.
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
       return;
     }
     fetchCourses(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, filterRating, filterLevel, maxPrice, filterPlatform]);
+  }, [debouncedSearch, filters.category, filters.level, filters.platform, filters.maxPrice, filters.topRated]);
 
-  const handleReset = () => {
-    setSearchQuery("");
-    setFilterRating("");
-    setFilterLevel("");
-    setSelectedLevelLabel("Level");
-    setMaxPrice(150);
-    setFilterPlatform("");
-    setSelectedPlatformLabel("Platform");
+  const reset = () => {
+    setFilters(DEFAULTS);
+    setDebouncedSearch("");
+    if (router.query.search || router.query.category) router.replace("/courses", undefined, { shallow: true });
   };
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        {/* LEFT */}
-        <div className={`col-12 col-md-3 col-lg-2 mt-4 mb-4`}>
-          <div className={styles.stickyWrapper}>
-                      <FilterSidebar
-            searchQuery={searchQuery}
-            filterRating={filterRating}
-            selectedLevelLabel={selectedLevelLabel}
-            selectedPlatformLabel={selectedPlatformLabel}
-            maxPrice={maxPrice}
-            onSearchChange={setSearchQuery}
-            onRatingChange={setFilterRating}
-            onSelectLevel={(level) => {
-              setFilterLevel(level);
-              setSelectedLevelLabel(level || "Level");
-            }}
-            onSelectPlatform={(platform) => {
-              setFilterPlatform(platform);
-              setSelectedPlatformLabel(platform || "Platform");
-            }}
-            onPriceChange={setMaxPrice}
-            onReset={handleReset}
-          />
+    <div className="wrap section">
+      <h1 className="display h2">{filters.category ? `${topicLabel(filters.category)} courses` : "All courses"}</h1>
+      <p className="lede">Search, filter, and open any course to see it on its platform. Prices marked free to audit mean the lessons are free and the certificate costs extra.</p>
 
-          </div>
-
-        </div>
-
-        {/* RIGHT */}
-        <div className="col-12 col-md-9 col-lg-10 p-4">
-          <h2 className="mb-3">Courses</h2>
-          <div className="row g-4">
-            {courses.length > 0 ? (
-              courses.map((course) => (
-                <div key={course.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                  <a
-                    href={formatUdemyUrl(course.url)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-decoration-none text-dark"
-                  >
-                    <div className={`card h-100 ${styles.courseCard}`}>
-                      <div className="position-relative">
-                        <img
-                          src={course.image}
-                          alt={course.title}
-                          loading="lazy"
-                          className={`p-3 img-fluid ${styles.courseImg}`}
-                        />
-                      </div>
-                      <div className="card-body d-flex flex-column">
-                        <h5 className={styles.cardTitle}>{course.title}</h5>
-                        <p className={`${styles.cardText} text-muted`}>{course.headline}</p>
-
-                        {getPlatformLogo(course.platform) && (
-                          <div className={styles.platformLogoWrapper}>
-                            <img
-                              src={getPlatformLogo(course.platform)}
-                              alt={`${course.platform} logo`}
-                              className={styles.platformLogo}
-                            />
-                          </div>
-                        )}
-
-                        <p className="mt-auto fw-bold">{formatPrice(course)}</p>
-                      </div>
-                      <div className={`${styles.cardFooter} small text-muted`}>
-                        {renderStars(course.rating)} | {course.level} <br />
-                        {course.instructor_names}
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              ))
-            ) : (
-              loading && (
-                <div className="text-center mt-2">
-                  <SquareLoader size={100} />
-                </div>
-              )
-            )}
-          </div>
-
-          {hasMore && (
-            <div className="text-center mt-4">
-              {loading ? (
-                <SquareLoader size={100} />
-              ) : (
-                <button className="btn btn-outline-dark rounded-5" onClick={() => fetchCourses(false)}>
-                  Load More
-                </button>
-              )}
-            </div>
-          )}
-        </div>
+      <div className={styles.filters}>
+        <label htmlFor="course-search" className="sr-only">Search courses</label>
+        <input
+          id="course-search"
+          type="search"
+          className={styles.search}
+          placeholder="Search courses"
+          autoComplete="off"
+          value={filters.search}
+          onChange={(e) => setFilter("search", e.target.value)}
+        />
+        <select aria-label="Level" className={styles.select} value={filters.level} onChange={(e) => setFilter("level", e.target.value)}>
+          <option value="">Any level</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Expert">Expert</option>
+          <option value="All Levels">All levels</option>
+        </select>
+        <select aria-label="Platform" className={styles.select} value={filters.platform} onChange={(e) => setFilter("platform", e.target.value)}>
+          <option value="">Any platform</option>
+          <option value="Udemy">Udemy</option>
+          <option value="Coursera">Coursera</option>
+        </select>
+        <select aria-label="Price" className={styles.select} value={filters.maxPrice} onChange={(e) => setFilter("maxPrice", e.target.value)}>
+          <option value="">Any price</option>
+          <option value="0">Free or free to audit</option>
+          <option value="20">Under $20</option>
+          <option value="50">Under $50</option>
+          <option value="100">Under $100</option>
+        </select>
+        <button
+          type="button"
+          className={styles.toggle}
+          aria-pressed={filters.topRated}
+          onClick={() => setFilter("topRated", !filters.topRated)}
+        >
+          Rated 4.5+
+        </button>
+        {filters.category && (
+          <button type="button" className={styles.topic} onClick={() => setFilter("category", "")}>
+            Topic: {topicLabel(filters.category)} <span aria-hidden="true">×</span>
+            <span className="sr-only">Remove topic</span>
+          </button>
+        )}
+        {!isDefault && (
+          <button type="button" className={styles.reset} onClick={reset}>Reset</button>
+        )}
       </div>
+
+      <div className={styles.grid}>
+        {courses.map((course) => <CourseCard key={course.id} course={course} />)}
+      </div>
+
+      {!loading && courses.length === 0 && (
+        <p className={styles.empty}>
+          No courses match these filters.{" "}
+          <button type="button" className={styles.reset} onClick={reset}>Reset filters</button>
+        </p>
+      )}
+
+      {hasMore && (
+        <div className={styles.moreRow}>
+          <button type="button" className="btn btn-outline" onClick={() => fetchCourses(false)} disabled={loading}>
+            {loading ? "Loading…" : "Load more"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

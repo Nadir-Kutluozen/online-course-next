@@ -1,9 +1,9 @@
 import { queryCourses } from '../../lib/courses';
 
 // Replaces the old Render backend. Query params match it:
-// search, rating, level, max_price, platform, free, skip, limit
+// search, rating, level, max_price, platform, category, free, skip, limit
 export default function handler(req, res) {
-  const { search, rating, level, max_price, platform, free, skip, limit } = req.query;
+  const { search, rating, level, max_price, platform, category, free, skip, limit } = req.query;
 
   const courses = queryCourses({
     search,
@@ -11,6 +11,7 @@ export default function handler(req, res) {
     level,
     maxPrice: max_price,
     platform,
+    category,
     free: free === '1' || free === 'true',
     skip,
     limit,

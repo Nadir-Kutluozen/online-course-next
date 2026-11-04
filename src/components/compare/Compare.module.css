@@ -1,0 +1,63 @@
+/* Lilac block, so the black borders show */
+.panel { background: var(--lilac); color: var(--ink); border-radius: var(--r); padding: clamp(24px, 4vw, 52px); }
+.lede { font-size: clamp(17px, 1.25vw, 20px); max-width: 52ch; margin-top: 16px; }
+.pickers { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 16px; align-items: end; margin-top: 28px; }
+.vs { font-size: 19px; line-height: 1; background: var(--ink); color: var(--lilac); border-radius: var(--pill); padding: 6px 18px 4px; margin-bottom: 12px; }
+.picker { position: relative; display: grid; gap: 8px; }
+.input {
+  width: 100%;
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: var(--pill);
+  padding: 13px 22px;
+  font-size: 16.5px;
+  outline: none;
+}
+.input:focus { outline: 3px solid var(--volt); outline-offset: 2px; }
+.input::placeholder { color: #6E6E66; }
+.results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+  max-height: 360px;
+  overflow-y: auto;
+}
+.result {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.result:hover, .result:focus-visible { background: var(--butter); }
+.resultMeta { color: #6E6E66; flex: none; }
+.status { padding: 10px 12px; color: #5C5850; }
+
+.tableWrap { margin-top: 28px; overflow-x: auto; background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: var(--r); }
+.table { width: 100%; min-width: 560px; border-collapse: collapse; }
+.table th, .table td { padding: 14px 20px; text-align: left; vertical-align: top; border-top: 1.5px solid #E2E0D6; }
+.table thead th { border-top: 0; font-weight: 600; font-size: 15.5px; width: 40%; }
+.table thead th:first-child, .table tbody th { width: 20%; color: #6E6E66; }
+.table a { text-decoration: none; }
+.table a:hover { text-decoration: underline; }
+.empty { color: #8A877C; font-weight: 400; }
+
+@media (max-width: 700px) {
+  .pickers { grid-template-columns: minmax(0, 1fr); }
+  .vs { justify-self: start; margin: 0; }
+}

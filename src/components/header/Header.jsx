@@ -1,83 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import DynamicButton from '../assets/DynamicButton';
+import { useRouter } from 'next/router';
+import styles from './Header.module.css';
 
+const LINKS = [
+  { href: '/#compare', label: 'Compare' },
+  { href: '/courses', label: 'Courses' },
+  { href: '/free-courses', label: 'Free to audit' },
+  { href: '/about', label: 'About' },
+];
 
 const Header = () => {
-  // Collapse navbar on nav-item click
-  useEffect(() => {
-    // Only run this after Bootstrap JS is loaded
-    import('bootstrap/dist/js/bootstrap.bundle.min.js').then((bootstrap) => {
-      const navLinks = document.querySelectorAll('.navbar-collapse .nav-link, .navbar-collapse a');
-      const collapseEl = document.getElementById('navbarNav');
-  
-      navLinks.forEach((link) => {
-        link.addEventListener('click', () => {
-          const collapseInstance = new bootstrap.Collapse(collapseEl, {
-            toggle: false,
-          });
-          collapseInstance.hide();
-        });
-      });
-  
-      return () => {
-        navLinks.forEach((link) => {
-          link.removeEventListener('click', () => {});
-        });
-      };
-    });
-  }, []);
-  
+  const [open, setOpen] = useState(false);
+  const { pathname } = useRouter();
+  const close = () => setOpen(false);
+
   return (
-    <nav className="navbar navbar-expand-lg bg-white shadow px-3">
-      <div className="container-fluid">
-        <Link href="/" className="navbar-brand d-flex align-items-center">
-          <img src="./logo.svg" alt="Logo" style={{ height: '40px' }} className="me-2" />
-        </Link>
+    <header className={`wrap ${styles.header}`}>
+      <div className={styles.bar}>
+        <Link href="/" className={styles.logo} onClick={close}>OnlineCourseCompare</Link>
 
+        <nav id="site-nav" className={`${styles.nav} ${open ? styles.open : ''}`} aria-label="Main">
+          {LINKS.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={`${styles.link} ${pathname === l.href ? styles.active : ''}`}
+              onClick={close}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+
+        <Link href="/#rate" className={`btn btn-dark ${styles.cta}`} onClick={close}>Rate a course</Link>
         <button
-          className="navbar-toggler border-0"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+          className={styles.menu}
+          aria-expanded={open}
+          aria-controls="site-nav"
+          onClick={() => setOpen(!open)}
         >
-          <span className="navbar-toggler-icon"></span>
+          {open ? 'Close' : 'Menu'}
         </button>
-
-        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul className="navbar-nav mx-auto text-center gap-3">
-            <li className="nav-item">
-              <Link href="/" className="nav-link lead">
-                <DynamicButton>Home</DynamicButton>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="/#action" className="nav-link">
-                <DynamicButton>Compare</DynamicButton>
-              </a>
-            </li>
-            <li className="nav-item">
-              <Link href="/courses" className="nav-link lead">
-                <DynamicButton>Courses</DynamicButton>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link href="/free-courses" className="nav-link lead">
-                <DynamicButton>Free Courses</DynamicButton>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link href="/about" className="nav-link lead">
-                <DynamicButton>About</DynamicButton>
-              </Link>
-            </li>
-          </ul>
-        </div>
       </div>
-    </nav>
+    </header>
   );
 };
 
