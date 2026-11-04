@@ -10,6 +10,8 @@ export default function Document() {
         {/* Array, the dotted accent face, only used for a couple of lines */}
         <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=array@400&display=swap" />
+        {/* Impact (affiliate network) site verification, exactly as Impact gave it */}
+        <meta name="impact-site-verification" value="1249c923-692c-4175-ab20-3df279c21b24" />
         {/* Google AdSense, loaded once for every page */}
         <script
           async
