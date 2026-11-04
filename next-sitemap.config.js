@@ -25,8 +25,17 @@ module.exports = {
   },
   // Course pages are built on first visit, so the build can't see them. List
   // the ones worth indexing: courses people search for (100+ platform reviews).
+  // Language copies of one course (same platform and title) are left out; their
+  // pages point Google to the main one (see mainCourse in src/lib/courses.js).
   additionalPaths: async (config) => {
-    const paths = courses
+    const main = new Map();
+    for (const c of courses) {
+      const key = `${c.platform}|${c.title.trim().toLowerCase()}`;
+      const cur = main.get(key);
+      const n = c.num_reviews || 0;
+      if (!cur || n > (cur.num_reviews || 0) || (n === (cur.num_reviews || 0) && c.id < cur.id)) main.set(key, c);
+    }
+    const paths = [...main.values()]
       .filter((c) => (c.num_reviews || 0) >= INDEX_MIN_REVIEWS)
       .map((c) => config.transform(config, `/courses/${c.id}-${slugify(c.title)}`));
     return Promise.all(paths);

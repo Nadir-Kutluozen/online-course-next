@@ -72,13 +72,36 @@ export function heroStats() {
 const byId = new Map(allCourses.map((c) => [c.id, c]));
 export const getCourse = (id) => byId.get(Number(id)) || null;
 
+// Some courses are listed more than once under the same title (Coursera's
+// language editions of one certificate, for example). The main one is the
+// most reviewed, then the oldest id. Lists show it once, and the copies
+// point Google to it with a canonical link.
+const titleKey = (c) => `${c.platform}|${c.title.trim().toLowerCase()}`;
+const mainByTitle = new Map();
+for (const c of allCourses) {
+  const key = titleKey(c);
+  const cur = mainByTitle.get(key);
+  if (!cur || (c.num_reviews || 0) > (cur.num_reviews || 0) || ((c.num_reviews || 0) === (cur.num_reviews || 0) && c.id < cur.id)) {
+    mainByTitle.set(key, c);
+  }
+}
+export const mainCourse = (course) => mainByTitle.get(titleKey(course)) || course;
+const uniqueTitles = (list) => {
+  const seen = new Set();
+  return list.filter((c) => {
+    const key = c.title.trim().toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 // Course pages Google should index: ones people actually search for (100+
 // platform reviews), or ones our own visitors have rated. The rest stay
 // reachable but noindex, so thin pages can't drag the site down.
 export const INDEX_MIN_REVIEWS = 100;
 export const isIndexable = (course, communityReviews = 0) =>
   communityReviews > 0 || (course.num_reviews || 0) >= INDEX_MIN_REVIEWS;
-export const indexableCourses = () => allCourses.filter((c) => (c.num_reviews || 0) >= INDEX_MIN_REVIEWS);
 
 // "Worth a look" score: a high rating that many people back up.
 const strength = (c) => (c.rating || 0) * Math.log10((c.num_reviews || 0) + 10);
@@ -109,7 +132,7 @@ export const topicBySlug = (slug) => topicSlugs().find((t) => t.slug === slug)?.
 export function topicOverview(name) {
   const inTopic = allCourses.filter((c) => c.category === name);
   const rated = inTopic.filter((c) => c.rating > 0);
-  const best = [...rated].sort((a, b) => strength(b) - strength(a));
+  const best = uniqueTitles([...rated].sort((a, b) => strength(b) - strength(a)));
   const free = inTopic.filter((c) => c.pricing === 'audit');
   return {
     name,
@@ -145,6 +168,6 @@ export function cheaperAlternatives(course, n = 5) {
     ({ id, title: t, platform, pricing, price, rating, num_reviews });
   return {
     kind: isPaid ? 'cheaper' : 'free',
-    courses: scored.sort((a, b) => b[0] - a[0]).slice(0, n).map(([, c]) => pick(c)),
+    courses: uniqueTitles(scored.sort((a, b) => b[0] - a[0]).map(([, c]) => c)).slice(0, n).map(pick),
   };
 }
