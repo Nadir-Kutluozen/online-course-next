@@ -63,3 +63,12 @@ alter table public.course_votes enable row level security;
 revoke all on public.course_votes         from anon, authenticated;
 revoke all on public.course_vote_totals   from anon, authenticated;
 revoke all on public.platform_vote_totals from anon, authenticated;
+
+-- Newer Supabase projects no longer give new tables API access by
+-- default, so give the secret key (service_role) exactly what it needs.
+grant select, insert, update on public.course_votes      to service_role;
+grant select on public.course_vote_totals, public.platform_vote_totals
+  to service_role;
+
+-- Tell the API to pick up the changes right away.
+notify pgrst, 'reload schema';
