@@ -127,7 +127,7 @@
 
 /* Questions */
 .questions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 36px; }
-.block { border-radius: var(--r); padding: 24px; display: flex; flex-direction: column; gap: 14px; min-height: 240px; }
+.block { border-radius: var(--r); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; min-height: 170px; }
 .blockTitle { font-size: clamp(24px, 2.05vw, 32px); }
 
 /* Topics */

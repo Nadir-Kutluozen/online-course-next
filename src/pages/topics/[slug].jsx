@@ -53,14 +53,12 @@ export default function TopicPage({ topic, others }) {
         </nav>
 
         <header className={styles.head}>
-          <h1 className="display">
-            Best {label} courses, <span className="outline">compared</span>
-          </h1>
-          <p className="lede">
-            We compared {topic.count.toLocaleString('en-US')} {label} courses from {listOf(topic.platforms)}. Here are
-            the highest rated ones that the most people back up, the best ones you can start for free, and what people
-            who took them say.
-          </p>
+          <div className={styles.headText}>
+            <h1 className="display">
+              Best {label} courses, <span className="outline">compared</span>
+            </h1>
+            <p className={styles.sub}>Ranked by rating and how many people back it up.</p>
+          </div>
           <dl className={styles.stats}>
             <div><dt className="label">Courses</dt><dd className="display">{topic.count.toLocaleString('en-US')}</dd></div>
             <div><dt className="label">Free to audit</dt><dd className="display">{topic.freeToAudit.toLocaleString('en-US')}</dd></div>
@@ -69,8 +67,7 @@ export default function TopicPage({ topic, others }) {
         </header>
 
         <section className={styles.section} aria-labelledby="top-title">
-          <h2 id="top-title" className="display h2">Highest rated</h2>
-          <p className={`lede ${styles.note}`}>Ranked by rating, weighted by how many people rated it, so a 4.9 from 12 people doesn&apos;t beat a 4.8 from 50,000.</p>
+          <h2 id="top-title" className={styles.banner}>Highest rated</h2>
           <ol className={styles.grid}>
             {topic.top.map((c, i) => (
               <li key={c.id} className={styles.item}>
@@ -83,7 +80,7 @@ export default function TopicPage({ topic, others }) {
 
         {topic.beginner.length > 0 && (
           <section className={styles.section} aria-labelledby="beginner-title">
-            <h2 id="beginner-title" className="display h2">Best for beginners</h2>
+            <h2 id="beginner-title" className={`${styles.banner} ${styles.bannerSky}`}>Best for beginners</h2>
             <div className={styles.grid}>
               {topic.beginner.map((c) => <CourseCard key={c.id} course={c} />)}
             </div>
@@ -92,8 +89,7 @@ export default function TopicPage({ topic, others }) {
 
         {topic.freePicks.length > 0 && (
           <section className={styles.section} aria-labelledby="free-title">
-            <h2 id="free-title" className="display h2">Free to start</h2>
-            <p className={`lede ${styles.note}`}>Free to audit means the lessons are free. The certificate usually costs extra.</p>
+            <h2 id="free-title" className={`${styles.banner} ${styles.bannerLime}`}>Free to start</h2>
             <div className={styles.grid}>
               {topic.freePicks.map((c) => <CourseCard key={c.id} course={c} />)}
             </div>

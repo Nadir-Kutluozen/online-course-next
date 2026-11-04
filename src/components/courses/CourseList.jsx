@@ -89,7 +89,6 @@ function CourseList({ initialCourses = [] }) {
   return (
     <div className="wrap section">
       <h1 className="display h2">{filters.category ? `${topicLabel(filters.category)} courses` : "All courses"}</h1>
-      <p className="lede">Search, filter, and open any course to see it on its platform. Prices marked free to audit mean the lessons are free and the certificate costs extra.</p>
 
       <div className={styles.filters}>
         <label htmlFor="course-search" className="sr-only">Search courses</label>

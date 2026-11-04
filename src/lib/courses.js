@@ -142,7 +142,7 @@ export function topicOverview(name) {
     platforms: [...new Set(inTopic.map((c) => c.platform))],
     top: best.slice(0, 12),
     freePicks: best.filter((c) => c.pricing === 'audit' && !best.slice(0, 12).includes(c)).slice(0, 8),
-    beginner: best.filter((c) => c.level === 'Beginner').slice(0, 4),
+    beginner: best.filter((c) => c.level === 'Beginner' && !best.slice(0, 12).includes(c)).slice(0, 4),
   };
 }
 

@@ -25,7 +25,6 @@ const Compare = ({ initialPair = [] }) => {
     <section id="compare" className="wrap section">
       <div className={styles.panel}>
         <RevealHeading>Put two courses <span className="outline" style={{ "--stroke": "var(--ink)" }}>side by side</span></RevealHeading>
-        <p className={styles.lede}>Search for two courses and compare the price, rating, level, length and who teaches them.</p>
 
         <div className={styles.pickers}>
           <CourseSearchInput id="compare-a" label="First course" selected={courseA} onCourseSelect={setCourseA} />

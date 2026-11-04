@@ -30,10 +30,7 @@ const FreeCourseList = ({ initialCourses = [] }) => {
   return (
     <div className="wrap section">
       <h1 className="display h2">Free to audit</h1>
-      <p className="lede">
-        You can watch the lessons of these courses for free. On Coursera, the certificate and
-        some graded work still cost extra, so we never call them simply free.
-      </p>
+      <p className="lede">Lessons free. Certificate extra.</p>
 
       <div className={styles.grid}>
         {courses.map((course) => <CourseCard key={course.id} course={course} />)}
