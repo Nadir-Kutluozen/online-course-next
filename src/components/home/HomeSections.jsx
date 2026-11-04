@@ -18,10 +18,7 @@ export const Hero = ({ courseCount, stats }) => (
         <span className={`${styles.line} outline`}><Rise d={1}>online course?</Rise></span>
         <span className={`${styles.line} ${styles.accent}`}><Rise d={2}>Compare it first.</Rise></span>
       </h1>
-      <p className={`lede ${styles.heroLede}`}>
-        See if there&apos;s a better course for the same goal, whether it&apos;s worth the money,
-        and what people who took it really say.
-      </p>
+      <p className={`lede ${styles.heroLede}`}>Better options, real prices, honest ratings.</p>
       <div className={styles.searchSpot}>
         {/* The hat sits on top of the search bar; hover it and it talks */}
         <div className={styles.hatSpot} aria-hidden="true">
@@ -67,10 +64,10 @@ export const Hero = ({ courseCount, stats }) => (
 );
 
 const QUESTIONS = [
-  { color: 'butter', q: 'Is there a better one?', a: 'Put two courses side by side: price, rating, level, length and who teaches it.' },
-  { color: 'coral', q: 'Is it worth the money?', a: 'See the real price, what is only free to audit, and whether people call it worth it or a money grab.' },
-  { color: 'sky', q: 'Will you learn anything?', a: 'People who took it say how much they learned and whether it is still up to date.' },
-  { color: 'lime', q: 'Is it your kind of course?', a: 'Beginner or advanced, hands-on or theory, taught by a person or padded with AI filler.' },
+  { color: 'butter', q: 'Is there a better one?', a: 'Compare side by side' },
+  { color: 'coral', q: 'Is it worth the money?', a: 'Worth it or money grab' },
+  { color: 'sky', q: 'Will you learn anything?', a: 'What people learned' },
+  { color: 'lime', q: 'Is it your kind of course?', a: 'Level, style, AI filler' },
 ];
 
 export const Questions = () => (
@@ -89,7 +86,7 @@ export const Questions = () => (
       {QUESTIONS.map((item, i) => (
         <div key={item.q} className={`m-wipe ${styles.block} ${styles[item.color]}`} style={{ '--d': i }}>
           <h3 className={`display ${styles.blockTitle}`}>{item.q}</h3>
-          <p>{item.a}</p>
+          <p className="label">{item.a}</p>
         </div>
       ))}
     </Reveal>
@@ -139,10 +136,7 @@ export const RateCta = () => (
       <h2 className="display h2">
         <span className="m-mask"><span className="m-rise" style={{ '--d': 3 }}>Took a course? Tell people the truth</span></span>
       </h2>
-      <p className={styles.rateText}>
-        Was it worth it or a money grab? Did you learn anything? How much of it was AI filler?
-        Your rating helps the next person decide. No account needed.
-      </p>
+      <p className={styles.rateText}>Anonymous. No account. Takes 30 seconds.</p>
       <span className={styles.ctaRow}>
         <Link href="/courses" className="btn btn-primary">Find your course</Link>
         {/* A hand-drawn arrow pointing at the button */}

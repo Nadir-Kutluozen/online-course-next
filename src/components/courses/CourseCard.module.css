@@ -18,7 +18,7 @@
 .link::after { content: ""; position: absolute; inset: 0; }
 .link:focus-visible { outline: none; }
 .card:has(.link:focus-visible) { outline: 3px solid var(--lilac); outline-offset: 3px; }
-.by { font-size: 13.5px; color: #5C5850; }
+.by { font-size: 13.5px; color: #5C5850; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .facts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 10px; font-size: 13.5px; }
 .rating { font-weight: 500; }
 .price { background: var(--ink); color: var(--paper); }
