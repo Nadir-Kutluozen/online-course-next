@@ -19,16 +19,26 @@ const CourseSearchInput = ({ placeholder, onCourseSelect }) => {
     params.append("search", searchTerm);
     params.append("limit", 10);
 
-    fetch(`https://onlinecourse-backend-okdb.onrender.com/courses?${params.toString()}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setFilteredCourses(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch filtered courses:", err);
-        setLoading(false);
-      });
+    // Debounce typing, and drop results for a search term that has since changed.
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      fetch(`/api/courses?${params.toString()}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (cancelled) return;
+          setFilteredCourses(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch filtered courses:", err);
+          if (!cancelled) setLoading(false);
+        });
+    }, 250);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [searchTerm]);
 
   const handleSelect = (course) => {

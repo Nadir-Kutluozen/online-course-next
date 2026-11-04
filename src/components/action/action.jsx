@@ -3,6 +3,7 @@ import CourseSearchInput from "../section2/courseSearchInput";
 import { renderStars } from "./helperFuncsAction";
 import { renderLanguage } from "./helperFuncsAction";
 import { formatUdemyUrl } from "./helperFuncsAction";
+import { formatPrice } from "./helperFuncsAction";
 import styles from './Action.module.css';
 
 const Action = () => {
@@ -76,8 +77,8 @@ const Action = () => {
                     <td>
                       <i className={`bi bi-currency-dollar me-2 ${styles.iconStyle}`}></i>
                     </td>
-                    <td>${courseA.price}</td>
-                    <td>${courseB.price}</td>
+                    <td>{formatPrice(courseA)}</td>
+                    <td>{formatPrice(courseB)}</td>
                   </tr>
                   <tr>
                     <td>
