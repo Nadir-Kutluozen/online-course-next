@@ -102,24 +102,6 @@ const tokens = (c) => {
   return tokenCache.get(c.id);
 };
 
-// Other courses for the same goal: same topic when we know it, and titles that
-// share real words. Highest rated with the most reviews first.
-export function similarCourses(course, n = 4) {
-  const mine = tokens(course);
-  const title = course.title.toLowerCase();
-  const scored = [];
-  for (const c of allCourses) {
-    if (c.id === course.id || c.title.toLowerCase() === title) continue;
-    if (course.category && c.category !== course.category) continue;
-    let shared = 0;
-    for (const w of tokens(c)) if (mine.has(w)) shared += 1;
-    if (!course.category && shared === 0) continue;
-    // A shared subject word outweighs popularity (strength tops out around 25).
-    scored.push([shared * 15 + strength(c), c]);
-  }
-  return scored.sort((a, b) => b[0] - a[0]).slice(0, n).map(([, c]) => c);
-}
-
 // Topic pages: /topics/<slug>
 export const topicSlugs = () => topicCounts().map((t) => ({ name: t.name, slug: slugify(t.name) }));
 export const topicBySlug = (slug) => topicSlugs().find((t) => t.slug === slug)?.name || null;
@@ -138,5 +120,31 @@ export function topicOverview(name) {
     top: best.slice(0, 12),
     freePicks: best.filter((c) => c.pricing === 'audit' && !best.slice(0, 12).includes(c)).slice(0, 8),
     beginner: best.filter((c) => c.level === 'Beginner').slice(0, 4),
+  };
+}
+
+// "Like this one, but cheaper": courses for the same goal that cost less (free
+// to audit counts as cheaper). For a course that's already free, the best free
+// ones like it. Only rated courses, the most relevant and popular first.
+export function cheaperAlternatives(course, n = 5) {
+  const isPaid = course.pricing === 'paid' && course.price > 0;
+  const isCheaper = (c) =>
+    c.pricing === 'audit' || c.pricing === 'free' || (isPaid && c.pricing === 'paid' && c.price < course.price);
+  const mine = tokens(course);
+  const title = course.title.toLowerCase();
+  const scored = [];
+  for (const c of allCourses) {
+    if (c.id === course.id || c.title.toLowerCase() === title || !(c.rating > 0) || !isCheaper(c)) continue;
+    let shared = 0;
+    for (const w of tokens(c)) if (mine.has(w)) shared += 1;
+    const sameTopic = course.category && c.category === course.category;
+    if (!shared && !sameTopic) continue;
+    scored.push([shared * 15 + strength(c), c]);
+  }
+  const pick = ({ id, title: t, platform, pricing, price, rating, num_reviews }) =>
+    ({ id, title: t, platform, pricing, price, rating, num_reviews });
+  return {
+    kind: isPaid ? 'cheaper' : 'free',
+    courses: scored.sort((a, b) => b[0] - a[0]).slice(0, n).map(([, c]) => pick(c)),
   };
 }

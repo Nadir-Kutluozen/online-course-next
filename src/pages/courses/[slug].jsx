@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import CourseCard from '../../components/courses/CourseCard';
-import ReviewSummary from '../../components/course/ReviewSummary';
-import ReviewList from '../../components/course/ReviewList';
-import RateForm from '../../components/course/RateForm';
-import { getCourse, isIndexable, similarCourses } from '../../lib/courses';
+import ScoreCard from '../../components/course/ScoreCard';
+import ReviewFeed from '../../components/course/ReviewFeed';
+import Alternatives from '../../components/course/Alternatives';
+import RateModal from '../../components/course/RateModal';
+import { OutIcon, StarIcon } from '../../components/course/icons';
+import { cheaperAlternatives, getCourse, isIndexable } from '../../lib/courses';
 import { emptyReviews, getCourseReviews } from '../../lib/reviews';
 import {
   SITE_URL,
@@ -13,7 +15,6 @@ import {
   coursePath,
   courseSlug,
   formatPrice,
-  formatRating,
   languageName,
   topicLabel,
   topicPath,
@@ -82,24 +83,24 @@ function metaDescription(course, summary) {
   } else if (course.rating && course.num_reviews) {
     parts.push(`Rated ${course.rating.toFixed(1)} by ${course.num_reviews.toLocaleString('en-US')} learners on ${course.platform}.`);
   }
-  parts.push('See honest ratings and better options for the same goal.');
+  parts.push('See honest ratings and cheaper options for the same goal.');
   return parts.join(' ');
 }
 
-export default function CoursePage({ course, similar, topic, reviews, indexable }) {
+export default function CoursePage({ course, alternatives, topic, reviews, indexable }) {
+  const [rateOpen, setRateOpen] = useState(false);
+  const openRate = () => setRateOpen(true);
+
+  // Links like /courses/<course>#rate open the rating window straight away.
+  useEffect(() => {
+    if (window.location.hash === '#rate') setRateOpen(true);
+  }, []);
+
   const url = `${SITE_URL}${coursePath(course)}`;
   const title = `${course.title}: Worth It or a Money Grab? | OnlineCourseCompare`;
   const description = metaDescription(course, reviews.summary);
   const img = courseImage(course);
   const isFree = course.pricing === 'audit' || course.pricing === 'free';
-  const lang = languageName(course.locale);
-
-  const facts = [
-    course.rating ? `${formatRating(course)} on ${course.platform}` : null,
-    course.num_subscribers ? `${compactNumber(course.num_subscribers)} enrolled` : null,
-    course.course_length || null,
-    lang,
-  ].filter(Boolean);
 
   return (
     <>
@@ -124,57 +125,55 @@ export default function CoursePage({ course, similar, topic, reviews, indexable 
         <nav aria-label="Breadcrumb" className={styles.crumbs}>
           <Link href="/courses">Courses</Link>
           {topic && <><span aria-hidden="true">/</span><Link href={topic.path}>{topic.label}</Link></>}
-          <span aria-hidden="true">/</span>
-          <span aria-current="page" className={styles.crumbHere}>{course.title}</span>
         </nav>
 
-        <header className={styles.head}>
-          <p className="label">{[course.platform, course.level].filter(Boolean).join(' · ')}</p>
-          <h1 className={styles.title}>{course.title}</h1>
-          {course.headline && <p className={`lede ${styles.headline}`}>{course.headline}</p>}
-          <div className={styles.factsRow}>
-            <span className={`chip ${isFree ? styles.free : styles.price}`}>{formatPrice(course)}</span>
-            {facts.map((f) => <span key={f} className={styles.fact}>{f}</span>)}
-          </div>
-          {course.instructor_names && <p className={styles.by}>Taught by {course.instructor_names}</p>}
-          <div className={styles.actions}>
-            <a href="#rate" className="btn btn-primary">Rate this course</a>
-            <a href={course.url} className="btn btn-outline" target="_blank" rel="noopener noreferrer nofollow">
-              See it on {course.platform}
-            </a>
-          </div>
-        </header>
-
-        <ReviewSummary summary={reviews.summary} topTags={reviews.topTags} />
-
-        {reviews.reviews.length > 0 && (
-          <section className={styles.section} aria-labelledby="reviews-title">
-            <h2 id="reviews-title" className="display h2">What people who took it say</h2>
-            <ReviewList reviews={reviews.reviews} tagOptions={reviews.tagOptions} />
-          </section>
-        )}
-
-        <section id="rate" className={styles.section}>
-          <RateForm course={course} tagOptions={reviews.tagOptions} enabled={reviews.enabled} />
-        </section>
-
-        {similar.length > 0 && (
-          <section className={styles.section} aria-labelledby="similar-title">
-            <h2 id="similar-title" className="display h2">Is there a better one?</h2>
-            <p className={`lede ${styles.sectionLede}`}>
-              Other {topic ? topic.label : 'courses'} for the same goal, the highest rated with the most reviews first.
-            </p>
-            <div className={styles.similar}>
-              {similar.map((c) => <CourseCard key={c.id} course={c} />)}
+        <div className={styles.layout}>
+          <header className={styles.head}>
+            <p className="label">{[course.platform, course.level].filter(Boolean).join(' · ')}</p>
+            <h1 className={styles.title}>{course.title}</h1>
+            <div className={styles.facts}>
+              <span className={`chip ${isFree ? styles.free : styles.price}`}>{formatPrice(course)}</span>
+              {course.rating ? (
+                <span className={styles.fact}>
+                  <StarIcon size={15} /> {course.rating.toFixed(1)} on {course.platform}
+                  {course.num_reviews ? <span className={styles.muted}> ({compactNumber(course.num_reviews)})</span> : null}
+                </span>
+              ) : null}
+              {course.num_subscribers ? <span className={styles.fact}>{compactNumber(course.num_subscribers)} enrolled</span> : null}
+              {course.course_length ? <span className={styles.fact}>{course.course_length}</span> : null}
             </div>
-            {topic && (
-              <Link href={topic.path} className={`btn btn-outline ${styles.moreLink}`}>
-                See the best {topic.label} courses
-              </Link>
-            )}
+            <div className={styles.actions}>
+              <button type="button" className="btn btn-primary" onClick={openRate}>Rate this course</button>
+              <a href={course.url} className="btn btn-outline" target="_blank" rel="noopener noreferrer nofollow">
+                See it on {course.platform} <OutIcon size={16} />
+              </a>
+            </div>
+          </header>
+
+          <aside className={styles.side}>
+            <ScoreCard summary={reviews.summary} topTags={reviews.topTags} onRate={openRate} />
+            <Alternatives alternatives={alternatives} topic={topic} />
+          </aside>
+
+          <ReviewFeed reviews={reviews.reviews} tagOptions={reviews.tagOptions} onRate={openRate} />
+        </div>
+
+        {(course.headline || course.instructor_names) && (
+          <section className={styles.about} aria-labelledby="about-title">
+            <h2 id="about-title" className={styles.sideTitle}>About this course</h2>
+            {course.headline && <p>{course.headline}</p>}
+            {course.instructor_names && <p className={styles.muted}>Taught by {course.instructor_names}</p>}
           </section>
         )}
       </div>
+
+      <RateModal
+        open={rateOpen}
+        onClose={() => setRateOpen(false)}
+        course={course}
+        tagOptions={reviews.tagOptions}
+        enabled={reviews.enabled}
+      />
     </>
   );
 }
@@ -208,7 +207,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       course,
-      similar: similarCourses(course, 4),
+      alternatives: cheaperAlternatives(course, 5),
       topic: course.category ? { label: topicLabel(course.category), path: topicPath(course.category) } : null,
       reviews,
       indexable: isIndexable(course, reviews.summary?.reviews || 0),

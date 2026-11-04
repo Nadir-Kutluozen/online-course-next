@@ -63,9 +63,8 @@ export async function getCourseReviews(courseId) {
     d.from('course_review_feed')
       .select('id, took_course, verdict, ai_slop, learned, difficulty, paid, comment, created_at, updated_at, helpful, not_helpful, tags')
       .eq('course_id', courseId)
-      .order('helpful', { ascending: false })
       .order('updated_at', { ascending: false })
-      .limit(30)
+      .limit(50)
       .then(throwIf),
     d.from('review_tags').select('code, label, kind').order('sort_order').then(throwIf),
   ]);
