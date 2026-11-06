@@ -1,6 +1,7 @@
 /* Course pictures and the color-block stand-in share one 16:9 shape. */
 .photo, .block { display: block; width: 100%; aspect-ratio: 16 / 9; }
-.photo { object-fit: cover; background: #E2E0D6; }
+/* height: auto so the 16:9 shape wins over the image's own height attribute */
+.photo { height: auto; object-fit: cover; background: #E2E0D6; }
 .block { display: grid; place-items: center; padding: 12%; }
 .pill {
   display: inline-flex;
@@ -8,7 +9,7 @@
   justify-content: center;
   max-width: 100%;
   /* Keeps its shape while the logo is still loading */
-  min-width: 140px;
+  min-width: min(140px, 100%);
   min-height: 50px;
   background: #fff;
   border: 2px solid var(--ink);

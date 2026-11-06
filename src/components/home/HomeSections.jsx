@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import HatMascot from './HatMascot';
+import RateTiles from './RateTiles';
 import Reveal, { RevealHeading } from '../motion/Reveal';
 import { compactNumber, topicLabel, topicPath } from '../../lib/format';
 import styles from './Home.module.css';
@@ -63,44 +64,14 @@ export const Hero = ({ courseCount, stats }) => (
   </section>
 );
 
-const QUESTIONS = [
-  { color: 'butter', q: 'Is there a better one?', a: 'Compare side by side' },
-  { color: 'coral', q: 'Is it worth the money?', a: 'Worth it or money grab' },
-  { color: 'sky', q: 'Will you learn anything?', a: 'What people learned' },
-  { color: 'lime', q: 'Is it your kind of course?', a: 'Level, style, AI filler' },
-];
-
-export const Questions = () => (
-  <section className="wrap section">
-    <RevealHeading>
-      Know the{' '}
-      <span className={styles.marked}>
-        truth
-        <svg className="m-draw" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true">
-          <path pathLength="1" d="M3 9C38 4 70 11 104 7 138 3 170 5 197 8" />
-        </svg>
-      </span>{' '}
-      before you pay
-    </RevealHeading>
-    <Reveal className={styles.questions}>
-      {QUESTIONS.map((item, i) => (
-        <div key={item.q} className={`m-wipe ${styles.block} ${styles[item.color]}`} style={{ '--d': i }}>
-          <h3 className={`display ${styles.blockTitle}`}>{item.q}</h3>
-          <p className="label">{item.a}</p>
-        </div>
-      ))}
-    </Reveal>
-  </section>
-);
-
 const TILE_COLORS = ['volt', 'coral', 'sky', 'lime'];
 
 export const Topics = ({ topics, courseCount }) => {
   const top = topics.slice(0, 4);
   const rest = topics.slice(4);
   return (
-    <section className="wrap section">
-      <RevealHeading>Browse <span className="outline">by topic</span></RevealHeading>
+    <section className={`wrap section ${styles.topicsView}`}>
+      <RevealHeading>Hot <span className="outline">topics</span></RevealHeading>
       <Reveal className={styles.topics}>
         <Link href="/courses" className={`m-wipe ${styles.tile} ${styles.tileBig} ${styles.butter}`}>
           <span className={`display ${styles.tileName}`}>All {courseCount.toLocaleString('en-US')} courses</span>
@@ -133,18 +104,22 @@ export const RateCta = () => (
   <section id="rate" className="wrap section">
     <Reveal>
       <div className={`m-wipe ${styles.rate}`}>
-      <h2 className="display h2">
-        <span className="m-mask"><span className="m-rise" style={{ '--d': 3 }}>Took a course? Tell people the truth</span></span>
-      </h2>
-      <p className={styles.rateText}>Anonymous. No account. Takes 30 seconds.</p>
-      <span className={styles.ctaRow}>
-        <Link href="/courses" className="btn btn-primary">Find your course</Link>
-        {/* A hand-drawn arrow pointing at the button */}
-        <svg className={`m-draw ${styles.arrow}`} viewBox="0 0 120 80" aria-hidden="true" style={{ '--d': 4 }}>
-          <path pathLength="1" d="M114 6C110 40 82 62 16 60" />
-          <path pathLength="1" d="M32 46 14 60 32 73" />
-        </svg>
-      </span>
+        <div className={styles.rateMain}>
+          <h2 className={`display ${styles.rateTitle}`}>
+            <span className="m-mask"><span className="m-rise" style={{ '--d': 3 }}>Took a course? Tell people the truth</span></span>
+          </h2>
+          <p className={styles.rateText}>Anonymous. No account. Takes 30 seconds.</p>
+          <span className={styles.ctaRow}>
+            <Link href="/courses" className="btn btn-primary">Find your course</Link>
+            {/* A hand-drawn arrow with a loop in it, pointing at the button. It
+                draws itself, holds, wipes away, and goes again. */}
+            <svg className={styles.arrow} viewBox="0 0 140 90" aria-hidden="true">
+              <path pathLength="1" d="M128 4C134 32 114 52 94 49 72 46 72 22 88 24 106 26 100 62 18 64" />
+              <path pathLength="1" d="M33 51 16 64 34 77" />
+            </svg>
+          </span>
+        </div>
+        <RateTiles />
       </div>
     </Reveal>
   </section>

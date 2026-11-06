@@ -158,7 +158,7 @@ export default function CoursePage({ course, canonicalPath, alternatives, topic,
 
           <aside className={styles.side}>
             <ScoreCard summary={reviews.summary} topTags={reviews.topTags} onRate={openRate} />
-            <Alternatives alternatives={alternatives} topic={topic} />
+            <Alternatives course={course} alternatives={alternatives} topic={topic} />
           </aside>
 
           <ReviewFeed reviews={reviews.reviews} tagOptions={reviews.tagOptions} onRate={openRate} />

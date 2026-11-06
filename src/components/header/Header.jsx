@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import LogoAnim from './LogoAnim';
 import styles from './Header.module.css';
 
 const LINKS = [
@@ -15,17 +16,28 @@ const Header = () => {
   const { pathname } = useRouter();
   const close = () => setOpen(false);
 
+  // Escape closes the phone menu.
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   return (
     <header className={`wrap ${styles.header}`}>
       <div className={styles.bar}>
-        <Link href="/" className={styles.logo} onClick={close}>OnlineCourseCompare</Link>
+        <Link href="/" className={styles.logo} onClick={close} aria-label="OnlineCourseCompare home">
+          <LogoAnim />
+        </Link>
 
         <nav id="site-nav" className={`${styles.nav} ${open ? styles.open : ''}`} aria-label="Main">
-          {LINKS.map((l) => (
+          {LINKS.map((l, i) => (
             <Link
               key={l.href}
               href={l.href}
               className={`${styles.link} ${pathname === l.href ? styles.active : ''}`}
+              style={{ '--i': i }}
               onClick={close}
             >
               {l.label}
@@ -33,16 +45,23 @@ const Header = () => {
           ))}
         </nav>
 
-        <Link href="/#rate" className={`btn btn-dark ${styles.cta}`} onClick={close}>Rate a course</Link>
-        <button
-          type="button"
-          className={styles.menu}
-          aria-expanded={open}
-          aria-controls="site-nav"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? 'Close' : 'Menu'}
-        </button>
+        <div className={styles.right}>
+          <Link href="/#rate" className={`btn btn-dark ${styles.cta}`} onClick={close}>Rate a course</Link>
+          <button
+            type="button"
+            className={`${styles.burger} ${open ? styles.burgerOpen : ''}`}
+            aria-expanded={open}
+            aria-controls="site-nav"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen(!open)}
+          >
+            <span className={styles.burgerLines} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+        </div>
       </div>
     </header>
   );

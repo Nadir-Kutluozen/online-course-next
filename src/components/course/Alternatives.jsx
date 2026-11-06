@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { compactNumber, coursePath, formatPrice } from '../../lib/format';
+import { compactNumber, comparePath, coursePath, formatPrice } from '../../lib/format';
 import { StarIcon } from './icons';
 import styles from './Course.module.css';
 
 // "Like this one, but cheaper": a short list, one line of facts each.
-const Alternatives = ({ alternatives, topic }) => {
+const Alternatives = ({ course, alternatives, topic }) => {
   if (!alternatives.courses.length) return null;
   return (
     <section className={styles.alts} aria-labelledby="alts-title">
@@ -16,7 +16,7 @@ const Alternatives = ({ alternatives, topic }) => {
         {alternatives.courses.map((c) => {
           const free = c.pricing === 'audit' || c.pricing === 'free';
           return (
-            <li key={c.id}>
+            <li key={c.id} className={styles.altItem}>
               <Link href={coursePath(c)} className={styles.alt}>
                 <span className={styles.altTitle}>{c.title}</span>
                 <span className={styles.altMeta}>
@@ -26,6 +26,7 @@ const Alternatives = ({ alternatives, topic }) => {
                   <span>{c.platform}</span>
                 </span>
               </Link>
+              <Link href={comparePath(course, c)} className={styles.altCompare}>Compare</Link>
             </li>
           );
         })}

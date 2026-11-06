@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import { Hero, Questions, Topics, RateCta } from '../components/home/HomeSections'
+import { Hero, Topics, RateCta } from '../components/home/HomeSections'
 import Compare from '../components/compare/Compare'
-import { COURSE_COUNT, heroPair, heroStats, topicCounts } from '../lib/courses'
+import { COURSE_COUNT, heroStats, popularCourses, topicCounts } from '../lib/courses'
 
-export default function HomePage({ courseCount, pair, stats, topics }) {
+export default function HomePage({ courseCount, popular, stats, topics }) {
   return (
     <>
       <Head>
@@ -15,10 +15,11 @@ export default function HomePage({ courseCount, pair, stats, topics }) {
         <link rel="canonical" href="https://www.onlinecoursecompare.com" />
       </Head>
       <Hero courseCount={courseCount} stats={stats} />
-      <Questions />
-      <Compare initialPair={pair} />
-      <Topics topics={topics} courseCount={courseCount} />
-      <RateCta />
+      <div className="bento">
+        <Topics topics={topics} courseCount={courseCount} />
+        <Compare popular={popular} />
+        <RateCta />
+      </div>
     </>
   )
 }
@@ -28,7 +29,7 @@ export async function getStaticProps() {
   return {
     props: {
       courseCount: COURSE_COUNT,
-      pair: heroPair(),
+      popular: popularCourses(4).map(({ id, title, platform, pricing, price, rating, num_reviews }) => ({ id, title, platform, pricing, price, rating, num_reviews })),
       stats: heroStats(),
       topics: topicCounts(),
     },
