@@ -1,0 +1,148 @@
+/* Three tiles on the purple rating card, bento style: one tall tile on the
+   left, two stacked on the right. Hard black shadows, 20px corners. */
+.tiles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 200px;
+  padding: 20px 20px 18px;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.anon { grid-row: span 2; background: var(--butter); }
+.vote { background: var(--lime); }
+.pick { background: var(--paper); }
+.art { flex: 1; display: grid; align-content: center; margin-bottom: 14px; }
+.name { font-size: clamp(24px, 2.1vw, 34px); }
+.line { font-size: 14px; font-weight: 500; }
+
+/* Anonymous: black bars strike out "Your name" and "Your email" */
+.redact { display: grid; gap: 14px; justify-items: start; }
+.field {
+  position: relative;
+  padding: 3px 6px;
+  font-weight: 600;
+  font-size: clamp(17px, 1.5vw, 22px);
+}
+.field i {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  border-radius: 6px;
+  transform-origin: left center;
+}
+
+/* Vote: three ratings in a list; the one that gets voted up climbs to the
+   top and the others step down, over and over */
+.rank { position: relative; height: 92px; }
+.row {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px 0 3px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--pill);
+  transform: translateY(calc(var(--i) * 33px));
+}
+.row b {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--lime);
+}
+.row i { height: 6px; border-radius: 3px; background: #8E8B80; width: 70%; }
+.row:nth-child(2) i { width: 48%; }
+.row:nth-child(3) i { width: 60%; }
+
+/* Picks the winner: two courses race, the winner gets the "Our pick" pill */
+.race { position: relative; display: grid; gap: 10px; }
+.bar { position: relative; height: 22px; overflow: hidden; background: #fff; border: 2px solid var(--ink); border-radius: var(--pill); }
+.bar i { position: absolute; inset: 0; background: var(--coral); transform-origin: left center; transform: scaleX(.55); }
+.barWin i { background: var(--lime); transform: scaleX(.92); }
+.stampMask { justify-self: start; overflow: hidden; padding: 6px 8px 8px 2px; margin: -2px 0 -8px; }
+.stamp {
+  display: block;
+  padding: 6px 12px 4px;
+  background: var(--lime);
+  border: 2px solid var(--ink);
+  border-radius: var(--pill);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  text-transform: uppercase;
+  rotate: -6deg;
+}
+
+/* The loops start once the card has been uncovered (data-in), and only for
+   viewers who allow motion; everyone else sees the finished drawing. */
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js) :global([data-in]) .field i { animation: strike 3.4s cubic-bezier(.65, 0, .35, 1) 1s infinite both; }
+  :global(.js) :global([data-in]) .fieldLate i { animation-delay: 1.25s; }
+  :global(.js) :global([data-in]) .row {
+    animation: climb 4.8s cubic-bezier(.65, 0, .35, 1) infinite both;
+    animation-delay: calc(1s - var(--i) * 1.6s);
+  }
+  :global(.js) :global([data-in]) .bar i { animation: race 4.4s cubic-bezier(.65, 0, .35, 1) 1.2s infinite both; }
+  :global(.js) :global([data-in]) .barWin i { animation-name: raceWin; }
+  :global(.js) :global([data-in]) .stamp { animation: stamp 4.4s cubic-bezier(.34, 1.4, .64, 1) 1.2s infinite both; }
+}
+
+/* the bar runs in from the left, holds, then leaves off the right */
+@keyframes strike {
+  0% { transform: scaleX(0); transform-origin: left center; }
+  22%, 72% { transform: scaleX(1); transform-origin: left center; }
+  72.1% { transform-origin: right center; }
+  94%, 100% { transform: scaleX(0); transform-origin: right center; }
+}
+/* bottom slot to top, top to middle, middle to bottom; the climber is yellow */
+@keyframes climb {
+  0% { transform: translateY(66px); background: var(--butter); z-index: 3; }
+  12% { transform: translateY(0); }
+  33.3% { transform: translateY(0); background: var(--butter); z-index: 1; }
+  45% { transform: translateY(33px); background: var(--paper); }
+  66.6% { transform: translateY(33px); }
+  78%, 100% { transform: translateY(66px); background: var(--paper); }
+}
+@keyframes race {
+  0% { transform: scaleX(0); }
+  28%, 80% { transform: scaleX(.55); }
+  96%, 100% { transform: scaleX(0); }
+}
+@keyframes raceWin {
+  0% { transform: scaleX(0); }
+  32%, 80% { transform: scaleX(.92); }
+  96%, 100% { transform: scaleX(0); }
+}
+/* the pill pops up out of its slot once the race is decided */
+@keyframes stamp {
+  0%, 32% { transform: translateY(140%); }
+  42%, 80% { transform: translateY(0); }
+  90%, 100% { transform: translateY(140%); }
+}
+
+@media (max-width: 560px) {
+  .tiles { grid-template-columns: minmax(0, 1fr); }
+  .anon { grid-row: auto; }
+  .tile { min-height: 0; }
+}

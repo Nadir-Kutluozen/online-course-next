@@ -51,15 +51,6 @@ export function topicCounts() {
   return [...counts].map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
 }
 
-const mostReviewed = (courses) => [...courses].sort((a, b) => (b.num_reviews || 0) - (a.num_reviews || 0))[0];
-
-// Two real courses for the same goal (learning Python), one per platform, for the homepage.
-export function heroPair() {
-  const coursera = mostReviewed(allCourses.filter((c) => c.platform === 'Coursera' && c.rating >= 4.7 && /python/i.test(c.title)));
-  const udemy = mostReviewed(allCourses.filter((c) => c.platform === 'Udemy' && /^python/i.test(c.title)));
-  return [coursera, udemy];
-}
-
 // Real totals for the hero strip.
 export function heroStats() {
   return {
@@ -170,4 +161,34 @@ export function cheaperAlternatives(course, n = 5) {
     kind: isPaid ? 'cheaper' : 'free',
     courses: uniqueTitles(scored.sort((a, b) => b[0] - a[0]).map(([, c]) => c)).slice(0, n).map(pick),
   };
+}
+
+// The courses most worth comparing with this one: shared subject words and
+// the same topic first, then the best rated with the most reviews.
+export function relatedCourses(course, n = 4) {
+  const mine = tokens(course);
+  const title = course.title.toLowerCase();
+  const scored = [];
+  for (const c of allCourses) {
+    if (c.id === course.id || c.title.toLowerCase() === title || !(c.rating > 0)) continue;
+    let shared = 0;
+    for (const w of tokens(c)) if (mine.has(w)) shared += 1;
+    const sameTopic = course.category && c.category === course.category;
+    if (!shared && !sameTopic) continue;
+    scored.push([shared * 15 + strength(c), c]);
+  }
+  return uniqueTitles(scored.sort((a, b) => b[0] - a[0]).map(([, c]) => c)).slice(0, n);
+}
+
+// Well-known courses to start comparing from, one per topic.
+export function popularCourses(n = 4) {
+  const picks = [];
+  for (const { name } of topicCounts()) {
+    const best = allCourses
+      .filter((c) => c.category === name && c.rating > 0)
+      .sort((a, b) => strength(b) - strength(a))[0];
+    if (best) picks.push(best);
+    if (picks.length >= n) break;
+  }
+  return picks;
 }

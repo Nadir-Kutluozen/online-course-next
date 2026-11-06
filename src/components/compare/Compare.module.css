@@ -1,9 +1,12 @@
 /* Lilac block, so the black borders show */
 .panel { background: var(--lilac); color: var(--ink); border-radius: var(--r); padding: clamp(24px, 4vw, 52px); }
-.lede { font-size: clamp(17px, 1.25vw, 20px); max-width: 52ch; margin-top: 16px; }
-.pickers { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 16px; align-items: end; margin-top: 28px; }
-.vs { font-size: 19px; line-height: 1; background: var(--ink); color: var(--lilac); border-radius: var(--pill); padding: 6px 18px 4px; margin-bottom: 12px; }
-.picker { position: relative; display: grid; gap: 8px; }
+/* On the homepage the card fills a whole screen; its content sits in the
+   middle, clear of the floating navbar */
+:global(.bento) .panel { display: flex; flex-direction: column; justify-content: center; padding-top: max(88px, clamp(24px, 4vw, 52px)); }
+.step { display: grid; gap: 16px; margin-top: 26px; }
+
+/* Search input with its dropdown (CourseSearchInput) */
+.picker { position: relative; display: grid; gap: 8px; max-width: 760px; }
 .input {
   width: 100%;
   background: #fff;
@@ -46,18 +49,80 @@
 }
 .result:hover, .result:focus-visible { background: var(--butter); }
 .resultMeta { color: #6E6E66; flex: none; }
-.status { padding: 10px 12px; color: #5C5850; }
+.status { padding: 10px 12px; color: #45406B; }
 
-.tableWrap { margin-top: 28px; overflow-x: auto; background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: var(--r); }
-.table { width: 100%; min-width: 560px; border-collapse: collapse; }
-.table th, .table td { padding: 14px 20px; text-align: left; vertical-align: top; border-top: 1.5px solid #E2E0D6; }
-.table thead th { border-top: 0; font-weight: 600; font-size: 15.5px; width: 40%; }
-.table thead th:first-child, .table tbody th { width: 20%; color: #6E6E66; }
-.table a { text-decoration: none; }
-.table a:hover { text-decoration: underline; }
-.empty { color: #8A877C; font-weight: 400; }
+/* Quick picks to start from */
+.quick { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.quickPick {
+  border: 2px solid var(--ink);
+  border-radius: var(--pill);
+  background: #fff;
+  color: var(--ink);
+  padding: 7px 14px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color .15s;
+}
+.quickPick:hover { background: var(--butter); }
 
-@media (max-width: 700px) {
-  .pickers { grid-template-columns: minmax(0, 1fr); }
-  .vs { justify-self: start; margin: 0; }
+/* Your pick on the left, four courses to compare it with on the right */
+.panel .heading { font-size: clamp(28px, 3vw, 46px); }
+.pickRow { display: grid; grid-template-columns: minmax(220px, 320px) auto minmax(0, 1fr); gap: 16px; align-items: center; }
+.pickedCard {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  background: var(--butter);
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+  box-shadow: 5px 5px 0 var(--ink);
+  padding: 22px 18px 16px;
+}
+.pickedBanner {
+  position: absolute;
+  top: -14px;
+  left: 12px;
+  padding: 6px 12px 4px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--pill);
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  text-transform: uppercase;
+  rotate: -5deg;
+}
+.change { justify-self: start; border: 0; background: transparent; color: var(--ink); font-weight: 600; font-size: 14px; text-decoration: underline; padding: 2px 0; }
+.vs { background: var(--ink); color: var(--lilac); border-radius: var(--pill); padding: 6px 14px 4px; font-size: 17px; line-height: 1; }
+.suggestions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.suggestion, .suggestionEmpty {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 86px;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.suggestion { box-shadow: 3px 3px 0 var(--ink); transition: background-color .15s; }
+.suggestion:hover { background: var(--butter); }
+.suggestionEmpty { background: rgba(255, 255, 255, .45); border-style: dashed; }
+.sugTitle { font-weight: 600; font-size: 15px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sugMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 13px; color: #5C5850; }
+.pickedCard .sugMeta { color: var(--ink); }
+.sugPrice { background: var(--ink); color: var(--paper); border-radius: var(--pill); padding: 2px 9px; font-weight: 600; }
+.sugFree { background: var(--lime); color: var(--ink); }
+
+@media (max-width: 900px) {
+  .pickRow { grid-template-columns: minmax(0, 1fr); }
+  .vs { justify-self: start; }
+}
+@media (max-width: 520px) {
+  .suggestions { grid-template-columns: minmax(0, 1fr); }
+  .suggestion, .suggestionEmpty { min-height: 0; }
 }

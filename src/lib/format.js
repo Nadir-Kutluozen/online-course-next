@@ -75,3 +75,16 @@ export const SITE_URL = 'https://www.onlinecoursecompare.com';
 export const TOOK_LABELS = { finished: 'Finished it', in_progress: 'Taking it now', dropped: 'Dropped it' };
 export const VERDICT_LABELS = { worth_it: 'Worth it', money_grab: 'Money grab' };
 export const PAID_LABELS = { free: 'Free', discount: 'On sale', full_price: 'Full price', subscription: 'Subscription' };
+
+// Comparison pages: /compare/<id>-<short-name>-vs-<id>-<short-name>, lower id
+// first, so every pair has exactly one address.
+const shortSlug = (course) => slugify(course.title).slice(0, 48).replace(/-+$/, '');
+export const comparePath = (a, b) => {
+  const [x, y] = a.id < b.id ? [a, b] : [b, a];
+  return `/compare/${x.id}-${shortSlug(x)}-vs-${y.id}-${shortSlug(y)}`;
+};
+// "123-some-name-vs-456-other-name" -> [123, 456], or null
+export const parseCompareSlug = (slug) => {
+  const m = /^(\d+)(?:-[a-z0-9-]*?)?-vs-(\d+)(?:-[a-z0-9-]*)?$/.exec(String(slug));
+  return m ? [Number(m[1]), Number(m[2])] : null;
+};

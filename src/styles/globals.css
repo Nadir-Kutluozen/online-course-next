@@ -37,7 +37,15 @@ h1, h2, h3, p { margin: 0; }
 :focus-visible { outline: 3px solid var(--lilac); outline-offset: 3px; }
 
 .wrap { width: min(1680px, 100% - 2 * var(--gutter)); margin-inline: auto; }
-.section { padding-block: clamp(56px, 8vw, 104px); }
+.section { padding-block: clamp(28px, 3.5vw, 52px); }
+/* Bento (homepage): each card is its own section, a full screen tall and
+   edge to edge, with 14px of black between cards. The card inside each
+   section stretches to fill it (Home and Compare modules set the insides).
+   The footer card joins in after it. */
+.bento { display: grid; gap: 14px; }
+.bento > .section { width: 100%; min-height: 100svh; padding: 0; display: grid; }
+.bento > .section > [data-reveal]:only-child { display: grid; }
+.bento ~ .wrap { width: 100%; }
 .display {
   font-family: var(--font-display), var(--font-body), sans-serif;
   font-weight: 600;
